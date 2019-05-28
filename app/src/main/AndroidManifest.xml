@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="facchini.riccardo.Elk_River_DIL_2019">
+
+    <uses-feature android:name="android.hardware.location.gps" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedInfo" />
+        <activity android:name=".Chat.Activity_Chat_Homepage" />
+        <activity android:name=".Chat.Activity_Chat" />
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch" />
+        <activity android:name=".Activity_Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Customer_Package.Activity_Customer.Activity_Customer_Create"
+            android:label="@string/customerRegistration"
+            android:parentActivityName=".Activity_Login" />
+        <activity
+            android:name=".Employee_Package.Activity_Employee.Activity_Employee_Create"
+            android:label="@string/employeeRegistration"
+            android:parentActivityName=".Activity_Login" />
+        <activity
+            android:name=".Employee_Package.Activity_Employee.Activity_Employee_TagHours"
+            android:label="@string/tagsAndHours" />
+        <activity
+            android:name=".Employee_Package.Activity_Employee.Activity_Employee_Profile"
+            android:label="@string/profile" />
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer" />
+        <activity android:name=".Employee_Package.Activity_Employee.Activity_Employee" />
+    </application>
+
+</manifest>

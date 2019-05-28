@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "763224769751",
+    "firebase_url": "https://elkriverdil2019.firebaseio.com",
+    "project_id": "elkriverdil2019",
+    "storage_bucket": "elkriverdil2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:763224769751:android:f9bf9a949fa3aee4",
+        "android_client_info": {
+          "package_name": "facchini.riccardo.Elk_River_DIL_2019"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "763224769751-kni0a2folamv3egn2g6m8843uopd5vnb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "facchini.riccardo.Elk_River_DIL_2019",
+            "certificate_hash": "a42f107e855218720c14f91a51a31f217e4a3fb2"
+          }
+        },
+        {
+          "client_id": "763224769751-jtrstdlh21ihehg5she88rg6jgjfhgh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCub6Mcwa1zSQ7LYZGG9m6_IgeI_bXv880"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "763224769751-jtrstdlh21ihehg5she88rg6jgjfhgh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
