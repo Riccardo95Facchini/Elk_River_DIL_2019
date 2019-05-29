@@ -11,21 +11,21 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
-import facchini.riccardo.Elk_River_DIL_2019.Spot_Fishing;
 
 public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapter_Customer_SearchSpotCard.Spot_ViewHolder>
 {
     private Context context;
-    private List<Spot_Fishing> spotsList;
+    private List<Fishing_Spot> fishingSpotList;
     private OnItemClickListener itemListener;
     
     
-    public Adapter_Customer_SearchSpotCard(Context context, List<Spot_Fishing> spotsList)
+    public Adapter_Customer_SearchSpotCard(Context context, List<Fishing_Spot> fishingSpotList)
     {
         this.context = context;
-        this.spotsList = spotsList;
+        this.fishingSpotList = fishingSpotList;
     }
     
     public void setOnItemClickListener(OnItemClickListener itemListener)
@@ -45,17 +45,17 @@ public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapte
     @Override
     public void onBindViewHolder(@NonNull Spot_ViewHolder holder, int pos)
     {
-        Spot_Fishing spotFishing = spotsList.get(pos);
+        Fishing_Spot fishingSpot = fishingSpotList.get(pos);
         
-        holder.textViewName.setText(spotFishing.getName());
-        holder.textViewAddress.setText(spotFishing.displayCoordinates());
-        holder.ratingBar.setRating((float) spotFishing.getAverageReviews());
+        holder.textViewName.setText(fishingSpot.getName());
+        holder.textViewAddress.setText(fishingSpot.displayCoordinates());
+        holder.ratingBar.setRating((float) fishingSpot.getAverageReviews());
     }
     
     @Override
     public int getItemCount()
     {
-        return spotsList.size();
+        return fishingSpotList.size();
     }
     
     class Spot_ViewHolder extends RecyclerView.ViewHolder
@@ -63,7 +63,7 @@ public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapte
         TextView textViewName, textViewAddress;
         RatingBar ratingBar;
         
-        public Spot_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
+        Spot_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
         {
             super(itemView);
             

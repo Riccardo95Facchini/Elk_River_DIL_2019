@@ -32,19 +32,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Adapter_Customer.Adapter_Customer_ReservationCard;
+import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
+import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Customer_Home;
 import facchini.riccardo.Elk_River_DIL_2019.SharedViewModel;
-import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 
 public class Fragment_Customer_Home extends Fragment implements OnItemClickListener
 {
     //Firestore
     private FirebaseFirestore db;
-    private CollectionReference customersCollection, employeesCollection, reservationsCollection;
+    private CollectionReference customersCollection, employeesCollection, spotsCollection, reservationsCollection;
     
     private Calendar now;
     private String customerUid;
@@ -93,6 +94,7 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
         customerUid = pref.getString(getString(R.string.current_user_uid_key), "");
         customersCollection = db.collection("customers");
         employeesCollection = db.collection("employees");
+        spotsCollection = db.collection("spots");
         reservationsCollection = db.collection("reservations");
         
         now = Calendar.getInstance();
@@ -140,6 +142,7 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
             @Override
             public void onFailure(@NonNull Exception e)
             {
+                //May fail if the index as not been created in Firestore, catch exception here to get the link
                 e.printStackTrace();
             }
         });
@@ -165,20 +168,39 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
         for (final QueryDocumentSnapshot doc : snap)
         {
             //TODO: make it more efficient, no need to load each one in its entirety (change reservation structure to include essentials)
-            employeesCollection.document((String) doc.get("employeeUid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+            if (doc.get("employeeUid") != null)
             {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot)
+                employeesCollection.document((String) doc.get("employeeUid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
                 {
-                    if (documentSnapshot.exists())
-                        resList.add(
-                                new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(),
-                                        documentSnapshot.toObject(Employee.class), doc.getId()));
-                    
-                    if (resList.size() == snap.size())
-                        orderList();
-                }
-            });
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+                        if (documentSnapshot.exists())
+                            resList.add(
+                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(),
+                                            documentSnapshot.toObject(Employee.class), doc.getId()));
+                        
+                        if (resList.size() == snap.size())
+                            orderList();
+                    }
+                });
+            } else
+            {
+                spotsCollection.document((String) doc.get("spotUid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+                        if (documentSnapshot.exists())
+                            resList.add(
+                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(),
+                                            documentSnapshot.toObject(Fishing_Spot.class), doc.getId()));
+                        
+                        if (resList.size() == snap.size())
+                            orderList();
+                    }
+                });
+            }
         }
     }
     
@@ -212,9 +234,17 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
     public void onItemClick(final int position)
     {
         Reservation_Customer_Home res = resList.get(position);
+        
+        String name;
+        
+        if (res.getEmployee() != null)
+            name = res.getEmployee().getName();
+        else
+            name = res.getFishingSpot().getName();
+        
         new AlertDialog.Builder(getContext()).setCancelable(true)
                 .setTitle(getString(R.string.areYouSure))
-                .setMessage(getString(R.string.deleteReservationFor).concat(res.getEmployee().getName()).concat(getString(R.string.onWithTabs)).concat(res.getDateFormatted()))
+                .setMessage(getString(R.string.deleteReservationFor).concat(name).concat(getString(R.string.onWithTabs)).concat(res.getDateFormatted()))
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
                     @Override

@@ -40,7 +40,7 @@ public class Fragment_Employee_Home extends Fragment
 {
     //Firestore
     private FirebaseFirestore db;
-    private CollectionReference customersCollection, employeesCollection, reservationsCollection;
+    private CollectionReference employeesCollection, reservationsCollection;
     
     private Calendar now;
     private String employeeUid;
@@ -66,7 +66,6 @@ public class Fragment_Employee_Home extends Fragment
         db = FirebaseFirestore.getInstance();
         SharedPreferences pref = getContext().getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
         employeeUid = pref.getString(getString(R.string.current_user_uid_key), "");
-        customersCollection = db.collection("customers");
         employeesCollection = db.collection("employees");
         reservationsCollection = db.collection("reservations");
         
@@ -76,8 +75,6 @@ public class Fragment_Employee_Home extends Fragment
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setVisibility(View.VISIBLE);
-        
-        resList = new ArrayList<>();
         
         noReservationsText = view.findViewById(R.id.noReservations);
         noReservationsText.setVisibility(View.GONE);

@@ -1,20 +1,20 @@
-package facchini.riccardo.Elk_River_DIL_2019;
+package facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.Map;
 
-public class Spot_Fishing implements Parcelable
+public class Fishing_Spot implements Parcelable
 {
     private String uid;
     private String name;
-    private long latitude;
-    private long longitude;
+    private double latitude;
+    private double longitude;
     private double averageReviews;
     private int numReviews;
     
-    public Spot_Fishing(String uid, String name, long latitude, long longitude, double averageReviews, int numReviews)
+    public Fishing_Spot(String uid, String name, long latitude, long longitude, double averageReviews, int numReviews)
     {
         this.uid = uid;
         this.name = name;
@@ -24,12 +24,12 @@ public class Spot_Fishing implements Parcelable
         this.numReviews = numReviews;
     }
     
-    public Spot_Fishing(Map<String, Object> m)
+    public Fishing_Spot(Map<String, Object> m)
     {
         this.uid = (String) m.get("uid");
         this.name = (String) m.get("name");
-        this.latitude = (long) m.get("latitude");
-        this.longitude = (long) m.get("longitude");
+        this.latitude = (double) m.get("latitude");
+        this.longitude = (double) m.get("longitude");
         this.numReviews = (int) ((long) m.get("numReviews"));
         
         try
@@ -46,9 +46,9 @@ public class Spot_Fishing implements Parcelable
     
     public String getName() {return name;}
     
-    public long getLatitude() {return latitude;}
+    public double getLatitude() {return latitude;}
     
-    public long getLongitude() {return longitude;}
+    public double getLongitude() {return longitude;}
     
     public double getAverageReviews() {return averageReviews;}
     
@@ -56,7 +56,7 @@ public class Spot_Fishing implements Parcelable
     
     public String displayCoordinates()
     {
-        return String.format("Latitude: %d\nLongitude: %d", latitude, longitude);
+        return String.format("Latitude: %s\nLongitude: %s", latitude, longitude);
     }
     
     @Override
@@ -66,11 +66,11 @@ public class Spot_Fishing implements Parcelable
         dest.writeString(name);
         dest.writeDouble(averageReviews);
         dest.writeInt(numReviews);
-        dest.writeLong(latitude);
-        dest.writeLong(longitude);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
     
-    private Spot_Fishing(Parcel in)
+    private Fishing_Spot(Parcel in)
     {
         this.uid = in.readString();
         this.name = in.readString();
@@ -80,22 +80,22 @@ public class Spot_Fishing implements Parcelable
         this.latitude = in.readLong();
     }
     
-    public static final Parcelable.Creator<Spot_Fishing> CREATOR = new Parcelable.Creator<Spot_Fishing>()
+    public static final Parcelable.Creator<Fishing_Spot> CREATOR = new Parcelable.Creator<Fishing_Spot>()
     {
         @Override
-        public Spot_Fishing createFromParcel(Parcel source)
+        public Fishing_Spot createFromParcel(Parcel source)
         {
-            return new Spot_Fishing(source);
+            return new Fishing_Spot(source);
         }
         
         @Override
-        public Spot_Fishing[] newArray(int size)
+        public Fishing_Spot[] newArray(int size)
         {
-            return new Spot_Fishing[size];
+            return new Fishing_Spot[size];
         }
     };
     
-    public Spot_Fishing()
+    public Fishing_Spot()
     {
     
     }
@@ -104,5 +104,14 @@ public class Spot_Fishing implements Parcelable
     public int describeContents()
     {
         return 0;
+    }
+    
+    public int compareTo(Fishing_Spot o2)
+    {
+        if (this.averageReviews > o2.averageReviews)
+            return 1;
+        else if (averageReviews < o2.averageReviews)
+            return -1;
+        else return 0;
     }
 }

@@ -63,7 +63,7 @@ public class Adapter_Customer_SearchEmployeeCard extends RecyclerView.Adapter<Ad
         TextView textViewName, textViewAddress;
         RatingBar ratingBar;
         
-        public Employees_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
+        Employees_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
         {
             super(itemView);
             

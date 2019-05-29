@@ -98,4 +98,9 @@
     <string name="no_fishing_spots">No suggested fishing spots found</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="fishing_instructor">Fishing Instructor</string>
+    <string name="fishing_spot">Fishing Spot</string>
+    <string name="CONST_EXPERT_INSTRUCTOR">expert_instructor</string>
+    <string name="CONST_RENTAL">rental</string>
+    <string name="CONST_SPOT">spot</string>
 </resources>

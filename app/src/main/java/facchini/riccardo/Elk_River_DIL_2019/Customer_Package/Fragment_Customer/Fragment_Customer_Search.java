@@ -9,10 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,23 +31,22 @@ import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Adapter_Customer.Adapter_Customer_SearchEmployeeCard;
+import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Adapter_Customer.Adapter_Customer_SearchSpotCard;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
-import facchini.riccardo.Elk_River_DIL_2019.Spot_Fishing;
 
 public class Fragment_Customer_Search extends Fragment implements OnItemClickListener
 {
     
-    public static String SPOT_FISHING = "spot";
-    
-    private ImageButton expertButton, rentalButton, spotButton;
-    private RecyclerView foundEmployeesView;
+    private ImageButton buttonInstructor, buttonRental, buttonSpot;
+    private RecyclerView recyclerView;
+    private LinearLayout selectionLayout;
     private ProgressBar progressBar;
     
     private ArrayList<Employee> foundEmployees = new ArrayList<>();
-    private ArrayList<Spot_Fishing> foundSpots = new ArrayList<>();
-    private Adapter_Customer_SearchEmployeeCard adapter;
+    private ArrayList<Fishing_Spot> foundSpots = new ArrayList<>();
     
     private SharedPreferences sharedPreferences;
     
@@ -67,9 +68,41 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
     {
         sharedPreferences = getContext().getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
         
-        foundEmployeesView = view.findViewById(R.id.foundEmployeesView);
-        foundEmployeesView.setHasFixedSize(true);
-        foundEmployeesView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView = view.findViewById(R.id.foundEmployeesView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        
+        selectionLayout = view.findViewById(R.id.selectionLayout);
+        
+        buttonInstructor = view.findViewById(R.id.buttonInstructor);
+        buttonInstructor.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                searchTag(getString(R.string.CONST_EXPERT_INSTRUCTOR));
+            }
+        });
+        
+        buttonRental = view.findViewById(R.id.buttonRental);
+        buttonRental.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                searchTag(getString(R.string.CONST_RENTAL));
+            }
+        });
+        
+        buttonSpot = view.findViewById(R.id.buttonSpot);
+        buttonSpot.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                searchTag(getString(R.string.CONST_SPOT));
+            }
+        });
         
         progressBar = view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -77,6 +110,24 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
         db = FirebaseFirestore.getInstance();
         employeesCollection = db.collection("employees");
         spotsCollection = db.collection("spots");
+        
+        view.setOnKeyListener(new View.OnKeyListener()
+        {
+            //TODO: FIND WHY NOT WORKING
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_BACK && selectionLayout.getVisibility() == View.GONE
+                        && progressBar.getVisibility() == View.GONE && recyclerView.getVisibility() == View.VISIBLE)
+                {
+                    selectionLayout.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    foundEmployees.clear();
+                    foundSpots.clear();
+                }
+                return false;
+            }
+        });
     }
     
     @Override
@@ -85,16 +136,16 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
         Intent intent = new Intent();
         Bundle b = new Bundle();
         
-        try
+        if (!foundEmployees.isEmpty())
         {
             Employee selected = foundEmployees.get(position);
             b.putParcelable("Selected", selected);
-        } catch (Exception e)
+        } else if (!foundSpots.isEmpty())
         {
-            
-            Spot_Fishing selected = foundSpots.get(position);
+            Fishing_Spot selected = foundSpots.get(position);
             b.putParcelable("Selected", selected);
         }
+        
         intent.putExtras(b);
         
         intent.setClass(getContext(), Activity_Customer_SelectedSearch.class);
@@ -103,17 +154,18 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
     
     
     /**
-     * Searches if employees with the given tag exist and displays them to the user
+     * Searches if employees or fishing spots with the given tag exist and displays them to the user
      *
      * @param text Tag to search
      */
     private void searchTag(String text)
     {
         progressBar.setVisibility(View.VISIBLE);
+        selectionLayout.setVisibility(View.GONE);
         foundEmployees.clear();
         foundSpots.clear();
         
-        if (text.equals(SPOT_FISHING))
+        if (!text.equals(getString(R.string.CONST_SPOT)))
         {
             employeesCollection.whereArrayContains("tags", text).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
             {
@@ -126,48 +178,55 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
                     progressBar.setVisibility(View.GONE);
                     
                     if (foundEmployees.isEmpty())
+                    {
                         Toast.makeText(getContext(), getString(R.string.noEmployeeFound), Toast.LENGTH_SHORT).show();
-                    else
-                        setAdapter(foundEmployees);
+                        selectionLayout.setVisibility(View.VISIBLE);
+                    } else
+                        setAdapter(foundEmployees, false);
                 }
             });
         } else
         {
-            
             spotsCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
             {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots)
                 {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots)
-                        foundSpots.add(new Spot_Fishing(doc.getData()));
+                        foundSpots.add(new Fishing_Spot(doc.getData()));
                     
                     progressBar.setVisibility(View.GONE);
                     
                     if (foundSpots.isEmpty())
+                    {
                         Toast.makeText(getContext(), getString(R.string.no_fishing_spots), Toast.LENGTH_SHORT).show();
-                    else
-                        setAdapter(foundSpots);
+                        selectionLayout.setVisibility(View.VISIBLE);
+                    } else
+                        setAdapter(foundSpots, true);
                 }
             });
         }
     }
     
-    private void setAdapter(Object result)
+    private void setAdapter(Object result, boolean isSpot)
     {
-        if (result.getClass() == foundEmployees.getClass())
-            Collections.sort((List<Employee>) result, searchEmployeeComparator);
-        else
-            Collections.sort(foundEmployees, searchEmployeeComparator);
+        recyclerView.setVisibility(View.VISIBLE);
         
-        adapter = new Adapter_Customer_SearchEmployeeCard(getContext(), foundEmployees);
-        adapter.setOnItemClickListener(this);
-        foundEmployeesView.setAdapter(adapter);
+        if (!isSpot)
+        {
+            Collections.sort((List<Employee>) result, searchEmployeeComparator);
+            Adapter_Customer_SearchEmployeeCard adapter = new Adapter_Customer_SearchEmployeeCard(getContext(), foundEmployees);
+            adapter.setOnItemClickListener(this);
+            recyclerView.setAdapter(adapter);
+        } else
+        {
+            Collections.sort((List<Fishing_Spot>) result, searchFishingSpotComparator);
+            Adapter_Customer_SearchSpotCard adapter = new Adapter_Customer_SearchSpotCard(getContext(), foundSpots);
+            adapter.setOnItemClickListener(this);
+            recyclerView.setAdapter(adapter);
+        }
     }
     
-    /**
-     * Defined comparator for reservations to order them
-     */
     public Comparator<Employee> searchEmployeeComparator = new Comparator<Employee>()
     {
         @Override
@@ -176,4 +235,14 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
             return o1.compareTo(o2);
         }
     };
+    public Comparator<Fishing_Spot> searchFishingSpotComparator = new Comparator<Fishing_Spot>()
+    {
+        @Override
+        public int compare(Fishing_Spot o1, Fishing_Spot o2)
+        {
+            return o1.compareTo(o2);
+        }
+    };
+    
+    
 }

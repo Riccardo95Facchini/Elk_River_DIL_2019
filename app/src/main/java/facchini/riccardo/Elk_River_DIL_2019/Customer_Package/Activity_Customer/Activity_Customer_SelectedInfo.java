@@ -55,8 +55,8 @@ public class Activity_Customer_SelectedInfo extends AppCompatActivity
         TextView textReviews = findViewById(R.id.textReviews);
         TextView textPhoneMail = findViewById(R.id.textPhoneMail);
         TextView textAddress = findViewById(R.id.textAddress);
-        buttonSend = findViewById(R.id.buttonEdit);
-        ratingReview = findViewById(R.id.ratingAvg);
+        buttonSend = findViewById(R.id.buttonSend);
+        ratingReview = findViewById(R.id.ratingReview);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
         
         textEmployeeName.setText(employee.getName());

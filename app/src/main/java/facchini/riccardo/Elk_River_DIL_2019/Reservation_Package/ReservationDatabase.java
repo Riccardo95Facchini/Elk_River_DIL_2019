@@ -6,18 +6,23 @@ public class ReservationDatabase
 {
     
     private String employeeUid;
+    private String spotUid;
     private String customerUid;
     private String customerName;
     private Date time;
     
-    public ReservationDatabase(String employeeUid, String customerUid, String customerName, Date time)
+    public ReservationDatabase(String serviceUid, String customerUid, String customerName, Date time, boolean isSpot)
     {
-        this.employeeUid = employeeUid;
+        if (isSpot)
+            this.spotUid = serviceUid;
+        else
+            this.employeeUid = serviceUid;
         this.customerUid = customerUid;
         this.customerName = customerName;
         this.time = time;
     }
     
+    public String getSpotUid() {return spotUid;}
     
     public String getEmployeeUid() {return employeeUid;}
     

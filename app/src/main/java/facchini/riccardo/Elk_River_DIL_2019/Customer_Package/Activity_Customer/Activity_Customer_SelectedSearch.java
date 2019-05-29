@@ -36,10 +36,10 @@ import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.Fragment_DatePicker;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.ReservationDatabase;
-import facchini.riccardo.Elk_River_DIL_2019.Spot_Fishing;
 
 public class Activity_Customer_SelectedSearch extends AppCompatActivity implements DatePickerDialog.OnDateSetListener
 {
@@ -48,9 +48,9 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
     CollectionReference reservationsCollection;
     
     private Employee selectedEmployee;
-    private Spot_Fishing selectedSpot;
+    private Fishing_Spot selectedSpot;
     private ArrayAdapter<String> adapter;
-    private Calendar selectedDate;
+    private Calendar selectedDate, now;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     
@@ -69,6 +69,11 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         setContentView(R.layout.activity_customer_selected_employee);
         
         sharedPref = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
+        
+        now = Calendar.getInstance();
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
         
         db = FirebaseFirestore.getInstance();
         reservationsCollection = db.collection("reservations");
@@ -182,6 +187,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
                 @Override
                 public void onFailure(@NonNull Exception e)
                 {
+                    //Catch here if index isn't created on firestore
                     e.printStackTrace();
                 }
             });
@@ -202,6 +208,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
                 @Override
                 public void onFailure(@NonNull Exception e)
                 {
+                    //Catch here if index isn't created on firestore
                     e.printStackTrace();
                 }
             });
@@ -216,7 +223,6 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
      */
     private void createSpinnerAdapter(QuerySnapshot snap)
     {
-        
         List<String> reservedHours = new ArrayList<>();
         
         for (QueryDocumentSnapshot doc : snap)
@@ -252,6 +258,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         } else
         {
             buildSpinnerArray("00:00", "23:00", spinnerText);
+            spinnerText.add("23:00");
         }
         
         if (!reservedHours.isEmpty() && !spinnerText.isEmpty())
@@ -290,9 +297,18 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         
         try
         {
+            if (selectedDate.get(Calendar.YEAR) == now.get(Calendar.YEAR) && selectedDate.get(Calendar.MONTH) == now.get(Calendar.MONTH)
+                    && selectedDate.get(Calendar.DAY_OF_MONTH) == now.get(Calendar.DAY_OF_MONTH) && selectedDate.get(Calendar.DAY_OF_WEEK) == now.get(Calendar.DAY_OF_WEEK))
+            {
+                Calendar plusOne = Calendar.getInstance();
+                plusOne.setTime(now.getTime());
+                plusOne.add(Calendar.MINUTE, 60);
+                start = timeFormat.format(plusOne.getTime());
+            }
+            
             calStart.setTime(timeFormat.parse(start));
             
-        } catch (ParseException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -300,7 +316,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         while (!(timeFormat.format(calStart.getTime()).equals(finish)))
         {
             spinnerText.add(timeFormat.format(calStart.getTime()));
-            calStart.add(Calendar.MINUTE, 30);
+            calStart.add(Calendar.MINUTE, 60);
         }
     }
     
@@ -387,7 +403,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         String customerName = sharedPref.getString(getString(R.string.current_user_username_key), "");
         
         String thisUid = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
-                .getString(getString(R.string.current_user_username_key), "");
+                .getString(getString(R.string.current_user_uid_key), "");
         
         String reservedUid;
         
@@ -397,7 +413,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
             reservedUid = selectedEmployee.getUid();
         
         
-        ReservationDatabase reservationDatabase = new ReservationDatabase(reservedUid, thisUid, customerName, fullDate);
+        ReservationDatabase reservationDatabase = new ReservationDatabase(reservedUid, thisUid, customerName, fullDate, isSpot);
         db.collection("reservations").add(reservationDatabase);
         
         Toast.makeText(this, getString(R.string.reservationCompleted), Toast.LENGTH_LONG).show();

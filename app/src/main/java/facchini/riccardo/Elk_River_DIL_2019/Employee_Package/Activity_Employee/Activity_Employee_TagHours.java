@@ -33,9 +33,6 @@ import facchini.riccardo.Elk_River_DIL_2019.R;
 
 public class Activity_Employee_TagHours extends AppCompatActivity
 {
-    public static String EXPERT_INSTRUCTOR = "expert_instructor", RENTAL = "rental";
-    
-    
     //Firestore
     private FirebaseFirestore db;
     private CollectionReference employeesReference;
@@ -128,9 +125,9 @@ public class Activity_Employee_TagHours extends AppCompatActivity
             
             for (String t : tags)
             {
-                if (t.equals(EXPERT_INSTRUCTOR))
+                if (t.equals(getString(R.string.CONST_EXPERT_INSTRUCTOR)))
                     checkExpert.setChecked(true);
-                else if (t.equals(RENTAL))
+                else if (t.equals(getString(R.string.CONST_RENTAL)))
                     checkRental.setChecked(true);
             }
         }
@@ -143,11 +140,11 @@ public class Activity_Employee_TagHours extends AppCompatActivity
                 if (isChecked)
                 {
                     sendButton.setEnabled(true);
-                    tags.add(EXPERT_INSTRUCTOR);
+                    tags.add(getString(R.string.CONST_EXPERT_INSTRUCTOR));
                 } else
                 {
                     for (String t : tags)
-                        if (t.equals(EXPERT_INSTRUCTOR))
+                        if (t.equals(getString(R.string.CONST_EXPERT_INSTRUCTOR)))
                             tags.remove(t);
                     
                     sendButton.setEnabled(!tags.isEmpty());
@@ -163,11 +160,11 @@ public class Activity_Employee_TagHours extends AppCompatActivity
                 if (isChecked)
                 {
                     sendButton.setEnabled(true);
-                    tags.add(RENTAL);
+                    tags.add(getString(R.string.CONST_RENTAL));
                 } else
                 {
                     for (String t : tags)
-                        if (t.equals(RENTAL))
+                        if (t.equals(getString(R.string.CONST_RENTAL)))
                             tags.remove(t);
                     
                     sendButton.setEnabled(!tags.isEmpty());

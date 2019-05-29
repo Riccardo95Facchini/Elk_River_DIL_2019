@@ -14,10 +14,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedInfo;
+import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Customer_Home;
-import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 
 public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapter_Customer_ReservationCard.Reservation_Customer_ViewHolder>
 {
@@ -51,11 +52,21 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     public void onBindViewHolder(@NonNull Reservation_Customer_ViewHolder holder, int pos)
     {
         Reservation_Customer_Home res = reservationCustomerHomeList.get(pos);
-        Employee employee = res.getEmployee();
         
-        holder.textViewEmployee.setText(employee.getName());
-        holder.textViewAddress.setText(employee.displayFullAddress());
-        holder.textViewWhen.setText(res.getDateFormatted());
+        Employee employee = res.getEmployee();
+        if (employee != null)
+        {
+            holder.textViewEmployee.setText(employee.getName());
+            holder.textViewAddress.setText(employee.displayFullAddress());
+            holder.textViewWhen.setText(res.getDateFormatted());
+        } else
+        {
+            Fishing_Spot fishingSpot = res.getFishingSpot();
+            holder.textViewEmployee.setText(fishingSpot.getName());
+            holder.textViewAddress.setText(fishingSpot.displayCoordinates());
+            holder.textViewWhen.setText(res.getDateFormatted());
+            holder.infoButton.setVisibility(View.GONE);
+        }
     }
     
     @Override
