@@ -56,7 +56,7 @@ public class Activity_Employee_Profile extends AppCompatActivity
             }
         });
         
-        textEmployeeName = findViewById(R.id.textEmployeeName);
+        textEmployeeName = findViewById(R.id.textName);
         textHours = findViewById(R.id.textHours);
         textReviews = findViewById(R.id.textReviews);
         textPhoneMail = findViewById(R.id.textPhoneMail);

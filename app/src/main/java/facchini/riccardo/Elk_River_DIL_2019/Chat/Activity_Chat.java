@@ -62,14 +62,11 @@ public class Activity_Chat extends AppCompatActivity
         
         //First smaller string
         if (thisUid.compareTo(otherUid) <= 0)
-        {
             nodeName = thisUid + "_" + otherUid;
-            reference = new Firebase("https://elkriverdil2019.firebaseio.com//messages/" + nodeName);
-        } else
-        {
+        else
             nodeName = otherUid + "_" + thisUid;
-            reference = new Firebase("https://elkriverdil2019.firebaseio.com//messages/" + nodeName);
-        }
+        
+        reference = new Firebase("https://elkriverdil2019.firebaseio.com/messages/" + nodeName);
         
         sendButton.setOnClickListener(new View.OnClickListener()
         {
@@ -104,25 +101,25 @@ public class Activity_Chat extends AppCompatActivity
             @Override
             public void onChildChanged(com.firebase.client.DataSnapshot dataSnapshot, String s)
             {
-                
+            
             }
             
             @Override
             public void onChildRemoved(com.firebase.client.DataSnapshot dataSnapshot)
             {
-                
+            
             }
             
             @Override
             public void onChildMoved(com.firebase.client.DataSnapshot dataSnapshot, String s)
             {
-                
+            
             }
             
             @Override
             public void onCancelled(FirebaseError firebaseError)
             {
-                
+            
             }
         });
         

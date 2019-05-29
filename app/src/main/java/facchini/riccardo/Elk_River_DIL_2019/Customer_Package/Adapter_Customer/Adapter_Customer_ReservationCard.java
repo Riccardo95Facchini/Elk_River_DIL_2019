@@ -13,7 +13,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedInfo;
+import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo;
+import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
@@ -26,7 +27,6 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     private Context context;
     private List<Reservation_Customer_Home> reservationCustomerHomeList;
     private OnItemClickListener itemListener;
-    
     
     public Adapter_Customer_ReservationCard(Context context, List<Reservation_Customer_Home> reservationCustomerHomeList)
     {
@@ -56,16 +56,17 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
         Employee employee = res.getEmployee();
         if (employee != null)
         {
-            holder.textViewEmployee.setText(employee.getName());
-            holder.textViewAddress.setText(employee.displayFullAddress());
+            holder.isSpot = false;
+            holder.textViewName.setText(employee.getName());
+            holder.textViewLocation.setText(employee.displayFullAddress());
             holder.textViewWhen.setText(res.getDateFormatted());
         } else
         {
             Fishing_Spot fishingSpot = res.getFishingSpot();
-            holder.textViewEmployee.setText(fishingSpot.getName());
-            holder.textViewAddress.setText(fishingSpot.displayCoordinates());
+            holder.isSpot = true;
+            holder.textViewName.setText(fishingSpot.getName());
+            holder.textViewLocation.setText(fishingSpot.displayCoordinates());
             holder.textViewWhen.setText(res.getDateFormatted());
-            holder.infoButton.setVisibility(View.GONE);
         }
     }
     
@@ -77,15 +78,16 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     
     class Reservation_Customer_ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView textViewEmployee, textViewAddress, textViewWhen;
+        TextView textViewName, textViewLocation, textViewWhen;
         ImageButton infoButton;
+        boolean isSpot;
         
-        public Reservation_Customer_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
+        Reservation_Customer_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
         {
             super(itemView);
             
-            textViewEmployee = itemView.findViewById(R.id.textViewEmployeeName);
-            textViewAddress = itemView.findViewById(R.id.textViewAddress);
+            textViewName = itemView.findViewById(R.id.textViewEmployeeName);
+            textViewLocation = itemView.findViewById(R.id.textViewAddress);
             textViewWhen = itemView.findViewById(R.id.textViewWhen);
             infoButton = itemView.findViewById(R.id.infoButton);
             
@@ -94,8 +96,16 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
                 @Override
                 public void onClick(View v)
                 {
-                    Employee employee = reservationCustomerHomeList.get(getAdapterPosition()).getEmployee();
-                    startEmployeeInfoActivity(employee);
+                    if (!isSpot)
+                    {
+                        
+                        Employee employee = reservationCustomerHomeList.get(getAdapterPosition()).getEmployee();
+                        startEmployeeInfoActivity(employee);
+                    } else
+                    {
+                        Fishing_Spot fishingSpot = reservationCustomerHomeList.get(getAdapterPosition()).getFishingSpot();
+                        startSpotInfoActivity(fishingSpot);
+                    }
                 }
             });
             
@@ -122,9 +132,23 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
          */
         private void startEmployeeInfoActivity(Employee employee)
         {
-            Intent intent = new Intent(context, Activity_Customer_SelectedInfo.class);
+            Intent intent = new Intent(context, Activity_Customer_SelectedEmployeeInfo.class);
             Bundle b = new Bundle();
             b.putParcelable("Selected", employee);
+            intent.putExtras(b);
+            context.startActivity(intent);
+        }
+        
+        /**
+         * Puts fishing spot into a bundle in the intent and launches it
+         *
+         * @param fishingSpot The fishing spot for which the info are requested
+         */
+        private void startSpotInfoActivity(Fishing_Spot fishingSpot)
+        {
+            Intent intent = new Intent(context, Activity_Customer_SelectedSpotInfo.class);
+            Bundle b = new Bundle();
+            b.putParcelable("Selected", fishingSpot);
             intent.putExtras(b);
             context.startActivity(intent);
         }

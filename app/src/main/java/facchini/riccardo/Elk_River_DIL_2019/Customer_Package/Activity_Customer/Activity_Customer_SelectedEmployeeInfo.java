@@ -3,8 +3,8 @@ package facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -15,11 +15,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
+import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Review;
-import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 
-public class Activity_Customer_SelectedInfo extends AppCompatActivity
+public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
 {
     private RatingBar ratingReview;
     private Button buttonSend;
@@ -50,12 +51,13 @@ public class Activity_Customer_SelectedInfo extends AppCompatActivity
         
         checkReviewExists();
         
-        TextView textEmployeeName = findViewById(R.id.textEmployeeName);
+        TextView textEmployeeName = findViewById(R.id.textName);
         TextView textHours = findViewById(R.id.textHours);
         TextView textReviews = findViewById(R.id.textReviews);
         TextView textPhoneMail = findViewById(R.id.textPhoneMail);
         TextView textAddress = findViewById(R.id.textAddress);
         buttonSend = findViewById(R.id.buttonSend);
+        Button buttonChat = findViewById(R.id.buttonChat);
         ratingReview = findViewById(R.id.ratingReview);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
         
@@ -90,6 +92,15 @@ public class Activity_Customer_SelectedInfo extends AppCompatActivity
                 sendReview();
             }
         });
+        
+        buttonChat.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startChat();
+            }
+        });
     }
     
     /**
@@ -98,7 +109,7 @@ public class Activity_Customer_SelectedInfo extends AppCompatActivity
      */
     private void checkReviewExists()
     {
-        reviewsRef.whereEqualTo("employeeUid", employee.getUid())
+        reviewsRef.whereEqualTo("serviceUid", employee.getUid())
                 .whereEqualTo("userUid", userUid).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
                 {
@@ -127,11 +138,20 @@ public class Activity_Customer_SelectedInfo extends AppCompatActivity
     {
         if (reviewId.isEmpty())
         {
-            reviewsRef.document().set(new Review(currentRating, employee.getUid(), userUid));
+            reviewsRef.document().set(new Review(currentRating, employee.getUid(), userUid, false));
         } else
             reviewsRef.document(reviewId).update("reviewScore", currentRating);
         
         pref.edit().putBoolean(getString(R.string.need_update_key), true).commit();
         this.finish();
+    }
+    
+    private void startChat()
+    {
+        Intent chatIntent = new Intent(this, Activity_Chat.class);
+        chatIntent.putExtra("thisUsername", pref.getString(getString(R.string.current_user_username_key), ""));
+        chatIntent.putExtra("otherUid", employee.getUid());
+        chatIntent.putExtra("otherUsername", employee.getName());
+        startActivity(chatIntent);
     }
 }

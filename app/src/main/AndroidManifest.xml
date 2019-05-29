@@ -9,8 +9,10 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedInfo" />
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo" />
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo" />
         <activity android:name=".Chat.Activity_Chat_Homepage" />
         <activity android:name=".Chat.Activity_Chat" />
         <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch" />

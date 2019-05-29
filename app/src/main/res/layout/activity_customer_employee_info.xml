@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Customer_Package.Activity_Customer.Activity_Customer_SelectedInfo">
+    tools:context=".Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo">
 
     <TextView
-        android:id="@+id/textEmployeeName"
+        android:id="@+id/textName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="textEmployeeName"
+        android:text="textName"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textStyle="bold"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEmployeeName"
+        app:layout_constraintTop_toBottomOf="@+id/textName"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -38,13 +38,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="Via Roma 12 Piacenza 29121"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingAvg" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonChat" />
 
     <TextView
         android:id="@+id/textPhoneMail"
@@ -118,6 +118,17 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHours" />
+
+    <Button
+        android:id="@+id/buttonChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/chat"
+        app:layout_constraintBottom_toBottomOf="@+id/textReviews"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textReviews" />
 
     <Button
         android:id="@+id/buttonSend"

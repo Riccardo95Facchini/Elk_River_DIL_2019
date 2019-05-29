@@ -64,20 +64,20 @@ public class Fishing_Spot implements Parcelable
     {
         dest.writeString(uid);
         dest.writeString(name);
-        dest.writeDouble(averageReviews);
-        dest.writeInt(numReviews);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeDouble(averageReviews);
+        dest.writeInt(numReviews);
     }
     
     private Fishing_Spot(Parcel in)
     {
         this.uid = in.readString();
         this.name = in.readString();
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
         this.averageReviews = in.readDouble();
         this.numReviews = in.readInt();
-        this.latitude = in.readLong();
-        this.latitude = in.readLong();
     }
     
     public static final Parcelable.Creator<Fishing_Spot> CREATOR = new Parcelable.Creator<Fishing_Spot>()
