@@ -3,15 +3,14 @@ package facchini.riccardo.Elk_River_DIL_2019.Reservation_Package;
 import java.util.Date;
 
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
-import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation;
 
 public class Reservation_Employee_Home extends Reservation
 {
     private Customer customer;
     
-    public Reservation_Employee_Home(Date date, Customer customer)
+    public Reservation_Employee_Home(Date date, String type, Customer customer)
     {
-        super(date);
+        super(date, type);
         this.customer = customer;
     }
     

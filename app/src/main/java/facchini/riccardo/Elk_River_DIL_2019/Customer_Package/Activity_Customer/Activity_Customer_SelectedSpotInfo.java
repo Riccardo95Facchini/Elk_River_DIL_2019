@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,12 +22,12 @@ import facchini.riccardo.Elk_River_DIL_2019.Review;
 public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
 {
     private RatingBar ratingReview;
-    private Button buttonSend;
     private CollectionReference reviewsRef;
     
     private Fishing_Spot fishingSpot;
     private String userUid;
     private String reviewId;
+    private String type;
     private long pastRating;
     private int currentRating;
     private SharedPreferences pref;
@@ -35,7 +35,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_employee_info);
+        setContentView(R.layout.activity_customer_service_info);
         
         reviewsRef = FirebaseFirestore.getInstance().collection("reviews");
         
@@ -44,6 +44,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
         
         
         Intent intent = getIntent();
+        type = intent.getStringExtra("type");
         Bundle b = intent.getExtras();
         if (b != null)
             fishingSpot = b.getParcelable("Selected");
@@ -59,7 +60,6 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
         TextView textAddress = findViewById(R.id.textAddress);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
         
-        buttonSend = findViewById(R.id.buttonSend);
         ratingReview = findViewById(R.id.ratingReview);
         
         textName.setText(fishingSpot.getName());
@@ -73,21 +73,12 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
             {
                 if (rating <= 0 || rating == pastRating)
-                    buttonSend.setEnabled(false);
+                    sendReview();
                 else
                 {
-                    buttonSend.setEnabled(true);
                     currentRating = (int) rating;
+                    sendReview();
                 }
-            }
-        });
-        
-        buttonSend.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                sendReview();
             }
         });
     }
@@ -127,11 +118,14 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
     {
         if (reviewId.isEmpty())
         {
-            reviewsRef.document().set(new Review(currentRating, fishingSpot.getUid(), userUid, true));
+            reviewsRef.document().set(new Review(currentRating, fishingSpot.getUid(), userUid, type));
+            Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
         } else
+        {
             reviewsRef.document(reviewId).update("reviewScore", currentRating);
+            Toast.makeText(this, "Review updated!", Toast.LENGTH_SHORT).show();
+        }
         
         pref.edit().putBoolean(getString(R.string.need_update_key), true).commit();
-        this.finish();
     }
 }

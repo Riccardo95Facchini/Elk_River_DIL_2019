@@ -103,4 +103,7 @@
     <string name="CONST_EXPERT_INSTRUCTOR">expert_instructor</string>
     <string name="CONST_RENTAL">rental</string>
     <string name="CONST_SPOT">spot</string>
+    <string name="write_a_review_optional">Write a review! (optional)</string>
+    <string name="star_review">%s: %d star review</string>
+    <string name="rental_equipment">Rental Equipment</string>
 </resources>

@@ -19,6 +19,7 @@ import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
+import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Customer_Home;
 
 public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapter_Customer_ReservationCard.Reservation_Customer_ViewHolder>
@@ -53,19 +54,24 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     {
         Reservation_Customer_Home res = reservationCustomerHomeList.get(pos);
         
-        Employee employee = res.getEmployee();
-        if (employee != null)
-        {
-            holder.isSpot = false;
-            holder.textViewName.setText(employee.getName());
-            holder.textViewLocation.setText(employee.displayFullAddress());
-            holder.textViewWhen.setText(res.getDateFormatted());
-        } else
+        if (res.getType().equals(Reservation.SPOT))
         {
             Fishing_Spot fishingSpot = res.getFishingSpot();
             holder.isSpot = true;
             holder.textViewName.setText(fishingSpot.getName());
             holder.textViewLocation.setText(fishingSpot.displayCoordinates());
+            holder.textViewWhen.setText(res.getDateFormatted());
+            
+        } else
+        {
+            Employee employee = res.getEmployee();
+            holder.isSpot = false;
+            
+            if (res.getType().equals(Reservation.INSTRUCTOR))
+                holder.textViewName.setText(String.format("%s - %s", employee.getName(), context.getString(R.string.fishing_instructor)));
+            else
+                holder.textViewName.setText(String.format("%s - %s", employee.getName(), context.getString(R.string.rental_equipment)));
+            holder.textViewLocation.setText(employee.displayFullAddress());
             holder.textViewWhen.setText(res.getDateFormatted());
         }
     }

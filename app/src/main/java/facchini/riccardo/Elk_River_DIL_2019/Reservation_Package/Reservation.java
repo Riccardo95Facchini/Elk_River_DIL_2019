@@ -5,12 +5,22 @@ import java.util.Date;
 
 public abstract class Reservation
 {
-    protected Date date;
+    Date date;
+    private String type;
+    public static final String INSTRUCTOR = "expert_instructor";
+    public static final String RENTAL = "rental";
+    public static final String SPOT = "spot";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM HH:mm");
     
-    public Reservation(Date date) {this.date = date;}
+    Reservation(Date date, String type)
+    {
+        this.date = date;
+        this.type = type;
+    }
     
     public String getDateFormatted() { return dateFormat.format(date); }
     
     public Date getDate() {return date;}
+    
+    public String getType() {return type;}
 }

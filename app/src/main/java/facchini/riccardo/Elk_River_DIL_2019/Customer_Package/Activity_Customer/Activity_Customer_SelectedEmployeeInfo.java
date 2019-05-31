@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,12 +24,12 @@ import facchini.riccardo.Elk_River_DIL_2019.Review;
 public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
 {
     private RatingBar ratingReview;
-    private Button buttonSend;
     private CollectionReference reviewsRef;
     
     private Employee employee;
     private String userUid;
     private String reviewId;
+    private String type;
     private long pastRating;
     private int currentRating;
     private SharedPreferences pref;
@@ -36,7 +37,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_employee_info);
+        setContentView(R.layout.activity_customer_service_info);
         
         reviewsRef = FirebaseFirestore.getInstance().collection("reviews");
         
@@ -45,6 +46,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         
         
         Intent intent = getIntent();
+        type = intent.getStringExtra("type");
         Bundle b = intent.getExtras();
         if (b != null)
             employee = b.getParcelable("Selected");
@@ -56,7 +58,6 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         TextView textReviews = findViewById(R.id.textReviews);
         TextView textPhoneMail = findViewById(R.id.textPhoneMail);
         TextView textAddress = findViewById(R.id.textAddress);
-        buttonSend = findViewById(R.id.buttonSend);
         Button buttonChat = findViewById(R.id.buttonChat);
         ratingReview = findViewById(R.id.ratingReview);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
@@ -75,21 +76,12 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
             {
                 if (rating <= 0 || rating == pastRating)
-                    buttonSend.setEnabled(false);
+                    sendReview();
                 else
                 {
-                    buttonSend.setEnabled(true);
                     currentRating = (int) rating;
+                    sendReview();
                 }
-            }
-        });
-        
-        buttonSend.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                sendReview();
             }
         });
         
@@ -138,12 +130,15 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
     {
         if (reviewId.isEmpty())
         {
-            reviewsRef.document().set(new Review(currentRating, employee.getUid(), userUid, false));
+            reviewsRef.document().set(new Review(currentRating, employee.getUid(), userUid, type));
+            Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
         } else
+        {
             reviewsRef.document(reviewId).update("reviewScore", currentRating);
+            Toast.makeText(this, "Review updated!", Toast.LENGTH_SHORT).show();
+        }
         
         pref.edit().putBoolean(getString(R.string.need_update_key), true).commit();
-        this.finish();
     }
     
     private void startChat()

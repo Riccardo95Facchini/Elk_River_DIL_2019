@@ -1,8 +1,6 @@
 package facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Fragment_Customer;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,11 +46,11 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
     private ArrayList<Employee> foundEmployees = new ArrayList<>();
     private ArrayList<Fishing_Spot> foundSpots = new ArrayList<>();
     
-    private SharedPreferences sharedPreferences;
-    
     //Firestore
-    FirebaseFirestore db;
-    CollectionReference employeesCollection, spotsCollection;
+    private FirebaseFirestore db;
+    private CollectionReference employeesCollection, spotsCollection;
+    
+    private String type;
     
     @Nullable
     @Override
@@ -66,8 +64,6 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
-        sharedPreferences = getContext().getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
-        
         recyclerView = view.findViewById(R.id.foundEmployeesView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -80,6 +76,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
             @Override
             public void onClick(View v)
             {
+                type = getString(R.string.CONST_EXPERT_INSTRUCTOR);
                 searchTag(getString(R.string.CONST_EXPERT_INSTRUCTOR));
             }
         });
@@ -90,6 +87,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
             @Override
             public void onClick(View v)
             {
+                type = getString(R.string.CONST_RENTAL);
                 searchTag(getString(R.string.CONST_RENTAL));
             }
         });
@@ -100,6 +98,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
             @Override
             public void onClick(View v)
             {
+                type = getString(R.string.CONST_SPOT);
                 searchTag(getString(R.string.CONST_SPOT));
             }
         });
@@ -146,6 +145,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
             b.putParcelable("Selected", selected);
         }
         
+        intent.putExtra("type", type);
         intent.putExtras(b);
         
         intent.setClass(getContext(), Activity_Customer_SelectedSearch.class);
@@ -180,6 +180,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
                     if (foundEmployees.isEmpty())
                     {
                         Toast.makeText(getContext(), getString(R.string.noEmployeeFound), Toast.LENGTH_SHORT).show();
+                        type = "";
                         selectionLayout.setVisibility(View.VISIBLE);
                     } else
                         setAdapter(foundEmployees, false);
@@ -200,6 +201,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
                     if (foundSpots.isEmpty())
                     {
                         Toast.makeText(getContext(), getString(R.string.no_fishing_spots), Toast.LENGTH_SHORT).show();
+                        type = "";
                         selectionLayout.setVisibility(View.VISIBLE);
                     } else
                         setAdapter(foundSpots, true);

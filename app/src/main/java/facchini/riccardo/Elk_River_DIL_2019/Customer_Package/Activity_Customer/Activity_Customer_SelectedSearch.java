@@ -59,6 +59,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
     private ImageButton startChatButton;
     
     private boolean isSpot = false;
+    private String type;
     
     SharedPreferences sharedPref;
     
@@ -79,6 +80,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         reservationsCollection = db.collection("reservations");
         
         Intent intent = getIntent();
+        type = intent.getStringExtra("type");
         Bundle b = intent.getExtras();
         
         employeeInfoText = findViewById(R.id.employeeInfoText);
@@ -89,7 +91,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         
         if (b != null)
         {
-            if (b.getParcelable("Selected").getClass() == Employee.class)
+            if (type.equals(getString(R.string.CONST_EXPERT_INSTRUCTOR)) || type.equals(getString(R.string.CONST_RENTAL)))
             {
                 selectedEmployee = b.getParcelable("Selected");
                 employeeInfoText.setText(String.format("City: %s \tAddress: %s %s", selectedEmployee.getCity(),
@@ -405,15 +407,15 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         String thisUid = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
                 .getString(getString(R.string.current_user_uid_key), "");
         
-        String reservedUid;
+        String servicedUid;
         
         if (isSpot)
-            reservedUid = selectedSpot.getUid();
+            servicedUid = selectedSpot.getUid();
         else
-            reservedUid = selectedEmployee.getUid();
+            servicedUid = selectedEmployee.getUid();
         
         
-        ReservationDatabase reservationDatabase = new ReservationDatabase(reservedUid, thisUid, customerName, fullDate, isSpot);
+        ReservationDatabase reservationDatabase = new ReservationDatabase(fullDate, type, servicedUid, thisUid, customerName);
         db.collection("reservations").add(reservationDatabase);
         
         Toast.makeText(this, getString(R.string.reservationCompleted), Toast.LENGTH_LONG).show();

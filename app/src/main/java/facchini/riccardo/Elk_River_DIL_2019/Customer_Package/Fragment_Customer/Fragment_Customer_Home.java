@@ -177,7 +177,7 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
                     {
                         if (documentSnapshot.exists())
                             resList.add(
-                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(),
+                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(), (String) doc.get("type"),
                                             documentSnapshot.toObject(Employee.class), doc.getId()));
                         
                         if (resList.size() == snap.size())
@@ -193,7 +193,7 @@ public class Fragment_Customer_Home extends Fragment implements OnItemClickListe
                     {
                         if (documentSnapshot.exists())
                             resList.add(
-                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(),
+                                    new Reservation_Customer_Home(((Timestamp) doc.get("time")).toDate(), (String) doc.get("type"),
                                             documentSnapshot.toObject(Fishing_Spot.class), doc.getId()));
                         
                         if (resList.size() == snap.size())

@@ -33,17 +33,12 @@ import facchini.riccardo.Elk_River_DIL_2019.R;
 
 public class Activity_Employee_TagHours extends AppCompatActivity
 {
-    //Firestore
-    private FirebaseFirestore db;
-    private CollectionReference employeesReference;
     
     //UI
     //Buttons
-    private Button sendButton, mondayButton, tuesdayButton, wednesdayButton, thursdayButton, fridayButton, saturdayButton, sundayButton;
+    private Button sendButton;
     //TextViews
     private Map<String, TextView> hoursTexts;
-    //Checkboxes
-    private CheckBox checkExpert, checkRental;
     
     private ArrayList<String> tags;
     private Map<String, List<String>> hours;
@@ -96,15 +91,16 @@ public class Activity_Employee_TagHours extends AppCompatActivity
         if (hours.isEmpty())
             sendButton.setEnabled(false);
         
-        mondayButton = findViewById(R.id.mondayButton);
-        tuesdayButton = findViewById(R.id.tuesdayButton);
-        thursdayButton = findViewById(R.id.thursdayButton);
-        wednesdayButton = findViewById(R.id.wednesdayButton);
-        fridayButton = findViewById(R.id.fridayButton);
-        saturdayButton = findViewById(R.id.saturdayButton);
-        sundayButton = findViewById(R.id.sundayButton);
-        checkExpert = findViewById(R.id.checkExpert);
-        checkRental = findViewById(R.id.checkRental);
+        Button mondayButton = findViewById(R.id.mondayButton);
+        Button tuesdayButton = findViewById(R.id.tuesdayButton);
+        Button thursdayButton = findViewById(R.id.thursdayButton);
+        Button wednesdayButton = findViewById(R.id.wednesdayButton);
+        Button fridayButton = findViewById(R.id.fridayButton);
+        Button saturdayButton = findViewById(R.id.saturdayButton);
+        Button sundayButton = findViewById(R.id.sundayButton);
+        //Checkboxes
+        CheckBox checkExpert = findViewById(R.id.checkExpert);
+        CheckBox checkRental = findViewById(R.id.checkRental);
         
         
         hoursTexts = new HashMap<>();
@@ -353,8 +349,9 @@ public class Activity_Employee_TagHours extends AppCompatActivity
      */
     private void sendData()
     {
-        db = FirebaseFirestore.getInstance();
-        employeesReference = db.collection("employees");
+        //Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference employeesReference = db.collection("employees");
         final Employee employee;
         if (!editing)
         {

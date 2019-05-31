@@ -4,22 +4,22 @@ public class Review
 {
     private int reviewScore;
     private String serviceUid;
-    private String userUid;
-    private boolean isSpot;
+    private String customerUid;
+    private String type;
     
-    public Review(int reviewScore, String serviceUid, String userUid, boolean isSpot)
+    public Review(int reviewScore, String serviceUid, String customerUid, String type)
     {
         this.reviewScore = reviewScore;
         this.serviceUid = serviceUid;
-        this.userUid = userUid;
-        this.isSpot = isSpot;
+        this.customerUid = customerUid;
+        this.type = type;
     }
     
-    public boolean isSpot() {return isSpot;}
+    public String getType() {return type;}
     
     public int getReviewScore() {return reviewScore;}
     
     public String getServiceUid() {return serviceUid;}
     
-    public String getUserUid() {return userUid;}
+    public String getCustomerUid() {return customerUid;}
 }

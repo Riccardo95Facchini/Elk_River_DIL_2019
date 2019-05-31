@@ -31,10 +31,10 @@ import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Adapter_Employee.Adapter_Employee_Home;
+import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Employee_Home;
 import facchini.riccardo.Elk_River_DIL_2019.SharedViewModel;
-import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 
 public class Fragment_Employee_Home extends Fragment
 {
@@ -137,7 +137,7 @@ public class Fragment_Employee_Home extends Fragment
             String name = doc.get("customerName").toString().substring(0, doc.get("customerName").toString().indexOf(' '));
             String surname = doc.get("customerName").toString().substring(doc.get("customerName").toString().indexOf(' ') + 1);
             Customer c = new Customer(doc.get("customerUid").toString(), name, surname);
-            resList.add(new Reservation_Employee_Home(((Timestamp) doc.get("time")).toDate(), c));
+            resList.add(new Reservation_Employee_Home(((Timestamp) doc.get("time")).toDate(), (String) doc.get("type"), c));
             
             if (resList.size() == snap.size())
                 orderList();
