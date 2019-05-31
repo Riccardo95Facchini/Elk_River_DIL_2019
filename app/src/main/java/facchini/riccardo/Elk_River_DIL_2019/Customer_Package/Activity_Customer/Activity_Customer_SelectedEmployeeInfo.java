@@ -27,12 +27,14 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
     private CollectionReference reviewsRef;
     
     private Employee employee;
-    private String userUid;
+    private String customerUid;
     private String reviewId;
     private String type;
     private long pastRating;
     private int currentRating;
     private SharedPreferences pref;
+    
+    boolean justOpened;
     
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,7 +44,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         reviewsRef = FirebaseFirestore.getInstance().collection("reviews");
         
         pref = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
-        userUid = pref.getString(getString(R.string.current_user_uid_key), "");
+        customerUid = pref.getString(getString(R.string.current_user_uid_key), "");
         
         
         Intent intent = getIntent();
@@ -51,6 +53,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         if (b != null)
             employee = b.getParcelable("Selected");
         
+        justOpened = true;
         checkReviewExists();
         
         TextView textEmployeeName = findViewById(R.id.textName);
@@ -75,12 +78,15 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
             {
-                if (rating <= 0 || rating == pastRating)
-                    sendReview();
-                else
+                if (!justOpened)
                 {
-                    currentRating = (int) rating;
-                    sendReview();
+                    if (rating <= 0 || rating == pastRating)
+                        sendReview();
+                    else
+                    {
+                        currentRating = (int) rating;
+                        sendReview();
+                    }
                 }
             }
         });
@@ -102,7 +108,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
     private void checkReviewExists()
     {
         reviewsRef.whereEqualTo("serviceUid", employee.getUid())
-                .whereEqualTo("userUid", userUid).get()
+                .whereEqualTo("customerUid", customerUid).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
                 {
                     @Override
@@ -118,6 +124,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
                             pastRating = (long) queryDocumentSnapshots.getDocuments().get(0).get("reviewScore");
                             ratingReview.setRating(pastRating);
                         }
+                        justOpened = false;
                     }
                 });
     }
@@ -130,7 +137,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
     {
         if (reviewId.isEmpty())
         {
-            reviewsRef.document().set(new Review(currentRating, employee.getUid(), userUid, type));
+            reviewsRef.document().set(new Review(currentRating, employee.getUid(), customerUid, type));
             Toast.makeText(this, "Review sent!", Toast.LENGTH_SHORT).show();
         } else
         {

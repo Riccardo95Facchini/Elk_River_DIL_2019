@@ -24,7 +24,6 @@ import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Cust
 
 public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapter_Customer_ReservationCard.Reservation_Customer_ViewHolder>
 {
-    
     private Context context;
     private List<Reservation_Customer_Home> reservationCustomerHomeList;
     private OnItemClickListener itemListener;
@@ -53,6 +52,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     public void onBindViewHolder(@NonNull Reservation_Customer_ViewHolder holder, int pos)
     {
         Reservation_Customer_Home res = reservationCustomerHomeList.get(pos);
+        holder.type = res.getType();
         
         if (res.getType().equals(Reservation.SPOT))
         {
@@ -86,6 +86,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     {
         TextView textViewName, textViewLocation, textViewWhen;
         ImageButton infoButton;
+        String type;
         boolean isSpot;
         
         Reservation_Customer_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
@@ -106,6 +107,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
                     {
                         
                         Employee employee = reservationCustomerHomeList.get(getAdapterPosition()).getEmployee();
+                        
                         startEmployeeInfoActivity(employee);
                     } else
                     {
@@ -142,6 +144,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
             Bundle b = new Bundle();
             b.putParcelable("Selected", employee);
             intent.putExtras(b);
+            intent.putExtra("type", type);
             context.startActivity(intent);
         }
         
@@ -156,6 +159,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
             Bundle b = new Bundle();
             b.putParcelable("Selected", fishingSpot);
             intent.putExtras(b);
+            intent.putExtra("type", type);
             context.startActivity(intent);
         }
     }

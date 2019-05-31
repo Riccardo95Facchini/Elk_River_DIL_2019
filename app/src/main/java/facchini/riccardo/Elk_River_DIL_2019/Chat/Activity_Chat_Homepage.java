@@ -28,7 +28,7 @@ public class Activity_Chat_Homepage extends AppCompatActivity
     private FirebaseFirestore db;
     private CollectionReference chatsCollection;
     
-    private String userUid;
+    private String customerUid;
     private ArrayList<ChatData> chatList = new ArrayList<>();
     private Adapter_Chat adapterChat;
     
@@ -45,7 +45,7 @@ public class Activity_Chat_Homepage extends AppCompatActivity
         
         db = FirebaseFirestore.getInstance();
         
-        userUid = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
+        customerUid = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
                 .getString(getString(R.string.current_user_uid_key), "");
         
         chatsCollection = db.collection("chats");
@@ -55,7 +55,7 @@ public class Activity_Chat_Homepage extends AppCompatActivity
         chatsRecycleView.setHasFixedSize(true);
         chatsRecycleView.setLayoutManager(new LinearLayoutManager(this));
         
-        chatsCollection.document(userUid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+        chatsCollection.document(customerUid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
         {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot)
@@ -95,7 +95,7 @@ public class Activity_Chat_Homepage extends AppCompatActivity
                 {
                     ChatData chatData = chatList.get(position);
                     Intent intent = new Intent(getBaseContext(), Activity_Chat.class);
-                    intent.putExtra("thisUid", userUid);
+                    intent.putExtra("thisUid", customerUid);
                     intent.putExtra("thisUsername", chatData.getThisName());
                     intent.putExtra("otherUid", chatData.getOtherUid());
                     intent.putExtra("otherUsername", chatData.getOtherName());
