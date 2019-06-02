@@ -110,9 +110,10 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
         employeesCollection = db.collection("employees");
         spotsCollection = db.collection("spots");
         
-        view.setOnKeyListener(new View.OnKeyListener()
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener()
         {
-            //TODO: FIND WHY NOT WORKING
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
@@ -123,6 +124,7 @@ public class Fragment_Customer_Search extends Fragment implements OnItemClickLis
                     recyclerView.setVisibility(View.GONE);
                     foundEmployees.clear();
                     foundSpots.clear();
+                    return true;
                 }
                 return false;
             }

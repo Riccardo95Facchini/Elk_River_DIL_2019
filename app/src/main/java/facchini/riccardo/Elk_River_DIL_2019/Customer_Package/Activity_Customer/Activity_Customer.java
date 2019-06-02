@@ -33,6 +33,8 @@ public class Activity_Customer extends AppCompatActivity
     private byte backButton;
     private int currentMenu = R.id.bottomHome;
     
+    private Fragment selected;
+    
     private BottomNavigationView bottomMenu;
     private Menu topMenu;
     
@@ -57,7 +59,7 @@ public class Activity_Customer extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
         {
-            Fragment selected = null;
+            selected = null;
             
             if (currentMenu == menuItem.getItemId())
                 return false;
@@ -99,7 +101,7 @@ public class Activity_Customer extends AppCompatActivity
             finish();
         else
         {
-            Toast.makeText(this, getString(R.string.pressBackToExit), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.pressBackToExit), Toast.LENGTH_SHORT).show();
             backButton++;
             
             new CountDownTimer(2000, 1000)
@@ -201,7 +203,7 @@ public class Activity_Customer extends AppCompatActivity
                 return true;
             case R.id.profile_menu:
                 currentMenu = R.id.profile_menu;
-                Fragment selected = new Fragment_Customer_Profile();
+                selected = new Fragment_Customer_Profile();
                 topMenu.getItem(1).setVisible(false);
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, selected).commit();
                 return true;
