@@ -162,7 +162,7 @@ public class Fragment_Employee_Home extends Fragment
         @Override
         public int compare(Reservation_Employee_Home o1, Reservation_Employee_Home o2)
         {
-            return o1.getDate().compareTo(o2.getDate());
+            return o1.getTime().compareTo(o2.getTime());
         }
     };
 }

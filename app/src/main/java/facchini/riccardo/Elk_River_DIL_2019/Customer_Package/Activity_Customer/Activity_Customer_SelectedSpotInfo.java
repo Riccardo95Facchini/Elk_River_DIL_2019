@@ -6,10 +6,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,7 +26,7 @@ import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Review;
 
-public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
+public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implements OnMapReadyCallback
 {
     private RatingBar ratingReview;
     private CollectionReference reviewsRef;
@@ -32,7 +39,8 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
     private int currentRating;
     private SharedPreferences pref;
     
-    boolean justOpened;
+    private boolean justOpened;
+    private GoogleMap mMap;
     
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,6 +77,9 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
         textReviews.setText(String.format("(%.2f/5) %d %s", fishingSpot.getAverageReviews(), fishingSpot.getNumReviews(), getString(R.string.reviews)));
         ratingAvg.setRating((float) fishingSpot.getAverageReviews());
         
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        
         ratingReview.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
         {
             @Override
@@ -87,6 +98,19 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
             }
         });
     }
+    
+    private void moveCamera(LatLng latLng)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+        
+        MarkerOptions options = new MarkerOptions()
+                .position(latLng)
+                .title(fishingSpot.getName());
+        mMap.addMarker(options);
+        
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    
     
     /**
      * Checks if this user has already made a review for this fishingSpot,
@@ -133,5 +157,12 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity
         }
         
         pref.edit().putBoolean(getString(R.string.need_update_key), true).commit();
+    }
+    
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        mMap = googleMap;
+        moveCamera(new LatLng(fishingSpot.getLatitude(), fishingSpot.getLongitude()));
     }
 }

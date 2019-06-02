@@ -208,7 +208,7 @@ public class Fragment_Customer_History extends Fragment implements OnItemClickLi
         @Override
         public int compare(Reservation_Customer_Home o1, Reservation_Customer_Home o2)
         {
-            return o1.getDate().compareTo(o2.getDate());
+            return o1.getTime().compareTo(o2.getTime());
         }
     };
     

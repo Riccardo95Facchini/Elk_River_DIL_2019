@@ -18,6 +18,6 @@ public class Reservation_Employee_Home extends Reservation
     
     public String getInfo()
     {
-        return String.format("%s    at: %s\n%s", date.toString(), date.toString(), customer.displayInfo());
+        return String.format("%s    at: %s\n%s", time.toString(), time.toString(), customer.displayInfo());
     }
 }

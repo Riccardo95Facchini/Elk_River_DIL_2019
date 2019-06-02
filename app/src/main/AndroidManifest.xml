@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="facchini.riccardo.Elk_River_DIL_2019">
 
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +44,19 @@
             android:label="@string/profile" />
         <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer" />
         <activity android:name=".Employee_Package.Activity_Employee.Activity_Employee" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_api_key" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
     </application>
 
 </manifest>
