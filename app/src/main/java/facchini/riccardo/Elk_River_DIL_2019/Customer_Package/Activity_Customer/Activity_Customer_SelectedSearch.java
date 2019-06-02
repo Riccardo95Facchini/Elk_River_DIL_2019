@@ -14,11 +14,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -67,7 +74,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_selected_employee);
+        setContentView(R.layout.activity_customer_selected_search);
         
         sharedPref = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
         
@@ -111,12 +118,30 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
                 
             } else
             {
+                FrameLayout mapFrame = findViewById(R.id.mapFrame);
+                mapFrame.setVisibility(View.VISIBLE);
                 selectedSpot = b.getParcelable("Selected");
                 name = selectedSpot.getName();
                 employeeInfoText.setVisibility(View.GONE);
                 employeeHoursText.setVisibility(View.GONE);
                 startChatButton.setVisibility(View.GONE);
                 isSpot = true;
+                
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                mapFragment.getMapAsync(new OnMapReadyCallback()
+                {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap)
+                    {
+                        LatLng latLng = new LatLng(selectedSpot.getLatitude(), selectedSpot.getLongitude());
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+                        
+                        MarkerOptions options = new MarkerOptions()
+                                .position(latLng)
+                                .title(selectedSpot.getName());
+                        googleMap.addMarker(options);
+                    }
+                });
             }
         }
         
