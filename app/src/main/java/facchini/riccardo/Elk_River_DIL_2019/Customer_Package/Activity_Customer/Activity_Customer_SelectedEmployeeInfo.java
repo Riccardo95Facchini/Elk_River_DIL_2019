@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,7 +47,6 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         pref = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
         customerUid = pref.getString(getString(R.string.current_user_uid_key), "");
         
-        
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         Bundle b = intent.getExtras();
@@ -56,6 +56,8 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         justOpened = true;
         checkReviewExists();
         
+        MapView map = findViewById(R.id.map);
+        map.setVisibility(View.GONE);
         TextView textEmployeeName = findViewById(R.id.textName);
         TextView textHours = findViewById(R.id.textHours);
         TextView textReviews = findViewById(R.id.textReviews);

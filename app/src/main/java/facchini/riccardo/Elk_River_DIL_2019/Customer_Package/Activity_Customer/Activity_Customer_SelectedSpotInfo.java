@@ -13,8 +13,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,7 +41,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     private SharedPreferences pref;
     
     private boolean justOpened;
-    private GoogleMap map;
+    private GoogleMap googleMap;
     
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -71,15 +72,18 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
         TextView textAddress = findViewById(R.id.textAddress);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
         
+        MapView map = findViewById(R.id.map);
+        
+        map.onCreate(null);
+        map.onResume();
+        map.getMapAsync(this);
+        
         ratingReview = findViewById(R.id.ratingReview);
         
         textName.setText(fishingSpot.getName());
         textAddress.setText(fishingSpot.displayCoordinates());
         textReviews.setText(String.format("(%.2f/5) %d %s", fishingSpot.getAverageReviews(), fishingSpot.getNumReviews(), getString(R.string.reviews)));
         ratingAvg.setRating((float) fishingSpot.getAverageReviews());
-        
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         
         ratingReview.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener()
         {
@@ -102,12 +106,12 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     
     private void moveCamera(LatLng latLng)
     {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
         
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
                 .title(fishingSpot.getName());
-        map.addMarker(options);
+        googleMap.addMarker(options);
         
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -163,7 +167,9 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
-        map = googleMap;
+        MapsInitializer.initialize(this);
+        this.googleMap = googleMap;
+        this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         moveCamera(new LatLng(fishingSpot.getLatitude(), fishingSpot.getLongitude()));
     }
 }

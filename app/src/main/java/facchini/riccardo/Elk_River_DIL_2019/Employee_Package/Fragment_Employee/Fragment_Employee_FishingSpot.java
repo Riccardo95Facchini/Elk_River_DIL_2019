@@ -33,7 +33,6 @@ import facchini.riccardo.Elk_River_DIL_2019.R;
 public class Fragment_Employee_FishingSpot extends Fragment implements OnMapReadyCallback
 {
     private GoogleMap googleMap;
-    private MapView map;
     
     private EditText editName;
     private EditText editLat;
@@ -61,8 +60,8 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        
-        map = view.findViewById(R.id.map);
+    
+        MapView map = view.findViewById(R.id.map);
         
         map.onCreate(null);
         map.onResume();
