@@ -107,4 +107,14 @@
     <string name="star_review">%s: %d star review</string>
     <string name="rental_equipment">Rental Equipment</string>
     <string name="maps_api_key">AIzaSyCub6Mcwa1zSQ7LYZGG9m6_IgeI_bXv880</string>
+    <string name="fishing_spot_name">Fishing Spot Name</string>
+    <string name="check_on_map">Check on map</string>
+    <string name="name_already_used">Name already used, loading it on map...</string>
+    <string name="enter_name_fishing_spot">Please enter a name for the fishing spot</string>
+    <string name="enter_valid_lat">Please enter a valid latitude</string>
+    <string name="enter_valid_lng">Please enter a valid longitude</string>
+    <string name="fishing_spot_added">Fishing spot added</string>
+    <string name="wrong_coordinates">Error, coordinates are not legitimate</string>
+    <string name="current_employee_is_expert_key">current_employee_is_expert_key</string>
+    <string name="add_fishing_spot">Add Fishing Spot</string>
 </resources>

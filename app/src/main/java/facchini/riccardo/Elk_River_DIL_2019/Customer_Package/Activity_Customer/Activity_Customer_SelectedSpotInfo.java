@@ -40,7 +40,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     private SharedPreferences pref;
     
     private boolean justOpened;
-    private GoogleMap mMap;
+    private GoogleMap map;
     
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -101,12 +101,12 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     
     private void moveCamera(LatLng latLng)
     {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f));
         
         MarkerOptions options = new MarkerOptions()
                 .position(latLng)
                 .title(fishingSpot.getName());
-        mMap.addMarker(options);
+        map.addMarker(options);
         
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
@@ -162,7 +162,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
-        mMap = googleMap;
+        map = googleMap;
         moveCamera(new LatLng(fishingSpot.getLatitude(), fishingSpot.getLongitude()));
     }
 }

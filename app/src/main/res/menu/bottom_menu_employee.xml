@@ -9,4 +9,9 @@
         android:id="@+id/bottomHistory"
         android:icon="@drawable/ic_history_black_24dp"
         android:title="@string/history" />
+    <item
+        android:id="@+id/bottomNewFishing"
+        android:icon="@drawable/ic_fishing_pole_black_24dp"
+        android:title="@string/add_fishing_spot"
+        android:visible="false" />
 </menu>

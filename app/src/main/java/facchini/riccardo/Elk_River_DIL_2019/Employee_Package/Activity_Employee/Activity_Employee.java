@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import facchini.riccardo.Elk_River_DIL_2019.Activity_Login;
 import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat_Homepage;
+import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Fragment_Employee.Fragment_Employee_FishingSpot;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Fragment_Employee.Fragment_Employee_History;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Fragment_Employee.Fragment_Employee_Home;
 import facchini.riccardo.Elk_River_DIL_2019.R;
@@ -47,6 +48,10 @@ public class Activity_Employee extends AppCompatActivity
         bottomMenu = findViewById(R.id.bottomMenu);
         bottomMenu.setOnNavigationItemSelectedListener(selectedListener);
         
+        bottomMenu.getMenu().getItem(2).setVisible(
+                getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
+                        .getBoolean(getString(R.string.current_employee_is_expert_key), false));
+        
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Employee_Home()).commit();
         setupFirebaseListener();
     }
@@ -64,9 +69,15 @@ public class Activity_Employee extends AppCompatActivity
             {
                 case R.id.bottomHome:
                     selected = new Fragment_Employee_Home();
+                    topMenu.getItem(1).setVisible(true);
                     break;
                 case R.id.bottomHistory:
                     selected = new Fragment_Employee_History();
+                    topMenu.getItem(1).setVisible(true);
+                    break;
+                case R.id.bottomNewFishing:
+                    selected = new Fragment_Employee_FishingSpot();
+                    topMenu.getItem(1).setVisible(false);
                     break;
             }
             

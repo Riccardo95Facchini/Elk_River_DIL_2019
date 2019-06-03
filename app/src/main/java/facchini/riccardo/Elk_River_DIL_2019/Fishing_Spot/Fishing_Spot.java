@@ -9,25 +9,39 @@ public class Fishing_Spot implements Parcelable
 {
     private String uid;
     private String name;
+    private String nameLowercase;
     private double latitude;
     private double longitude;
     private double averageReviews;
     private int numReviews;
     
-    public Fishing_Spot(String uid, String name, long latitude, long longitude, double averageReviews, int numReviews)
+    public Fishing_Spot(String uid, String name, double latitude, double longitude, double averageReviews, int numReviews)
     {
         this.uid = uid;
         this.name = name;
+        this.nameLowercase = name.toLowerCase();
         this.latitude = latitude;
         this.longitude = longitude;
         this.averageReviews = averageReviews;
         this.numReviews = numReviews;
     }
     
+    public Fishing_Spot(String uid, String name, double latitude, double longitude)
+    {
+        this.uid = uid;
+        this.name = name;
+        this.nameLowercase = name.toLowerCase();
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.averageReviews = 0;
+        this.numReviews = 0;
+    }
+    
     public Fishing_Spot(Map<String, Object> m)
     {
         this.uid = (String) m.get("uid");
         this.name = (String) m.get("name");
+        this.nameLowercase = name.toLowerCase();
         this.latitude = (double) m.get("latitude");
         this.longitude = (double) m.get("longitude");
         this.numReviews = (int) ((long) m.get("numReviews"));
@@ -41,6 +55,7 @@ public class Fishing_Spot implements Parcelable
         }
     }
     
+    public String getNameLowercase() {return nameLowercase;}
     
     public String getUid() {return uid;}
     
@@ -64,6 +79,7 @@ public class Fishing_Spot implements Parcelable
     {
         dest.writeString(uid);
         dest.writeString(name);
+        dest.writeString(nameLowercase);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
         dest.writeDouble(averageReviews);
@@ -74,6 +90,7 @@ public class Fishing_Spot implements Parcelable
     {
         this.uid = in.readString();
         this.name = in.readString();
+        this.nameLowercase = in.readString();
         this.latitude = in.readDouble();
         this.longitude = in.readDouble();
         this.averageReviews = in.readDouble();

@@ -25,6 +25,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer;
@@ -208,6 +209,8 @@ public class Activity_Login extends AppCompatActivity
                 {
                     isEmployee = true;
                     currentName = (String) documentSnapshot.get("name");
+                    if (((ArrayList<String>) documentSnapshot.get("tags")).contains(getString(R.string.CONST_EXPERT_INSTRUCTOR)))
+                        sharedPref.edit().putBoolean(getString(R.string.current_employee_is_expert_key), true).apply();
                 }
                 
                 userTypeDecision(currentName, false);
@@ -304,6 +307,7 @@ public class Activity_Login extends AppCompatActivity
     private void onSignedOutCleanup()
     {
         detachDatabaseReadListener();
+        sharedPref.edit().clear().apply();
         isEmployee = false;
         isCustomer = false;
     }
