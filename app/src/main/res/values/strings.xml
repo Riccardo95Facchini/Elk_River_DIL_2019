@@ -117,6 +117,6 @@
     <string name="wrong_coordinates">Error, coordinates are not legitimate</string>
     <string name="current_employee_is_expert_key">current_employee_is_expert_key</string>
     <string name="add_fishing_spot">Add Fishing Spot</string>
-    <string name="new_chat_message_from">New chat message from:</string>
-    <string name="new_reservation_from">New reservation from:</string>
+    <string name="new_chat_message_from">New chat message from: </string>
+    <string name="new_reservation_from">New reservation from: </string>
 </resources>

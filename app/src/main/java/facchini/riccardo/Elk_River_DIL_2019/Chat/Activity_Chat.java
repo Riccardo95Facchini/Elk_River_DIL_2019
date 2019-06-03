@@ -81,6 +81,22 @@ public class Activity_Chat extends AppCompatActivity
             }
         });
         
+        messageArea.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                scrollView.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
+        
         reference.addChildEventListener(new ChildEventListener()
         {
             @Override
@@ -97,6 +113,15 @@ public class Activity_Chat extends AppCompatActivity
                 {
                     addMessageBox(message, 2);
                 }
+                
+                scrollView.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        scrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
             }
             
             @Override
@@ -157,8 +182,8 @@ public class Activity_Chat extends AppCompatActivity
         map.put("user", thisUsername);
         reference.push().setValue(map);
         messageArea.setText("");
-    
-        new Notification(otherUid, thisUsername, Notification.NOTIFICATION_CHAT, messageText,this);
+        
+        new Notification(otherUid, thisUsername, Notification.NOTIFICATION_CHAT, messageText, this);
     }
     
     /**
