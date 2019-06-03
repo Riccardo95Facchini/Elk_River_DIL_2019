@@ -143,7 +143,8 @@ public class Activity_Login extends AppCompatActivity
             {
                 Intent createEmployeeIntent = new Intent(Activity_Login.this, Activity_Employee_Create.class);
                 createEmployeeIntent.putExtra("uid", uid);
-                createEmployeeIntent.putExtra("mail", user.getEmail());
+                String email = user.getEmail();
+                createEmployeeIntent.putExtra("mail", email);
                 startActivity(createEmployeeIntent);
             }
         });
@@ -155,7 +156,8 @@ public class Activity_Login extends AppCompatActivity
             {
                 Intent createCustomerIntent = new Intent(Activity_Login.this, Activity_Customer_Create.class);
                 createCustomerIntent.putExtra("uid", uid);
-                createCustomerIntent.putExtra("mail", user.getEmail());
+                String email = user.getEmail();
+                createCustomerIntent.putExtra("mail", email);
                 createCustomerIntent.putExtra("phone", user.getPhoneNumber());
                 startActivity(createCustomerIntent);
             }

@@ -126,7 +126,8 @@ public class Activity_Employee_TagHours extends AppCompatActivity
                 else if (t.equals(getString(R.string.CONST_RENTAL)))
                     checkRental.setChecked(true);
             }
-        }
+        } else
+            tags = new ArrayList<>();
         
         checkExpert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {

@@ -192,6 +192,8 @@ public class Activity_Customer extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        
+        
         switch (item.getItemId())
         {
             case R.id.sign_out_menu:
@@ -208,7 +210,10 @@ public class Activity_Customer extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, selected).commit();
                 return true;
             case R.id.refresh_menu:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Customer_Home()).commit();
+                if (currentMenu == R.id.bottomHome)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Customer_Home()).commit();
+                else if (currentMenu == R.id.bottomHistory)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Customer_History()).commit();
                 return true;
             case R.id.chat_menu:
                 Intent intent = new Intent(getBaseContext(), Activity_Chat_Homepage.class);

@@ -34,6 +34,8 @@ public class Activity_Employee extends AppCompatActivity
     private BottomNavigationView bottomMenu;
     private Menu topMenu;
     
+    private Fragment selected;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,7 +56,7 @@ public class Activity_Employee extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
         {
-            Fragment selected = null;
+            selected = null;
             
             currentMenu = menuItem.getItemId();
             
@@ -156,7 +158,7 @@ public class Activity_Employee extends AppCompatActivity
         topMenu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_action_bar, menu);
-    
+        
         topMenu.getItem(2).setVisible(true);
         topMenu.getItem(3).setVisible(true);
         
@@ -189,6 +191,12 @@ public class Activity_Employee extends AppCompatActivity
             case R.id.chat_menu:
                 Intent intent = new Intent(getBaseContext(), Activity_Chat_Homepage.class);
                 startActivity(intent);
+                return true;
+            case R.id.refresh_menu:
+                if (currentMenu == R.id.bottomHome)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Employee_Home()).commit();
+                else if (currentMenu == R.id.bottomHistory)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Employee_History()).commit();
                 return true;
             case R.id.profile_menu:
                 currentMenu = R.id.profile_menu;
