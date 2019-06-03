@@ -59,6 +59,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
         if (b != null)
             fishingSpot = b.getParcelable("Selected");
         
+        justOpened = true;
         checkReviewExists();
         
         findViewById(R.id.textHours).setVisibility(View.GONE);
