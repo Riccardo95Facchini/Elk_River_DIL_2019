@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,6 +245,7 @@ public class Activity_Login extends AppCompatActivity
         
         if (isCustomer)
         {
+            FirebaseMessaging.getInstance().subscribeToTopic(uid);
             startActivity(new Intent(this, Activity_Customer.class));
             edit.putBoolean(getString(R.string.isCustomer_key), true).apply();
             if (!skipped)
@@ -251,6 +253,7 @@ public class Activity_Login extends AppCompatActivity
             finish();
         } else if (isEmployee)
         {
+            FirebaseMessaging.getInstance().subscribeToTopic(uid);
             startActivity(new Intent(this, Activity_Employee.class));
             edit.putBoolean(getString(R.string.isCustomer_key), false).apply();
             if (!skipped)
