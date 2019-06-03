@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import facchini.riccardo.Elk_River_DIL_2019.Notification;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
 
@@ -156,6 +157,8 @@ public class Activity_Chat extends AppCompatActivity
         map.put("user", thisUsername);
         reference.push().setValue(map);
         messageArea.setText("");
+    
+        new Notification(otherUid, thisUsername, Notification.NOTIFICATION_CHAT, messageText,this);
     }
     
     /**

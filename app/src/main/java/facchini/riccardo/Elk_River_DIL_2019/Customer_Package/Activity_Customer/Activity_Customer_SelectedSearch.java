@@ -45,6 +45,7 @@ import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.Fragment_DatePicker;
+import facchini.riccardo.Elk_River_DIL_2019.Notification;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.ReservationDatabase;
 
@@ -437,11 +438,15 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         if (isSpot)
             servicedUid = selectedSpot.getUid();
         else
+        {
             servicedUid = selectedEmployee.getUid();
+            new Notification(servicedUid, customerName, Notification.NOTIFICATION_RESERVATION, "", this);
+        }
         
         
         ReservationDatabase reservationDatabase = new ReservationDatabase(fullDate, type, servicedUid, thisUid, customerName);
         db.collection("reservations").add(reservationDatabase);
+        
         
         Toast.makeText(this, getString(R.string.reservationCompleted), Toast.LENGTH_LONG).show();
     }

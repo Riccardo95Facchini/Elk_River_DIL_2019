@@ -2,7 +2,7 @@ package facchini.riccardo.Elk_River_DIL_2019;
 
 import android.content.Context;
 
-import com.firebase.client.Firebase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Notification
 {
@@ -33,7 +33,6 @@ public class Notification
     
     private void sendNotification()
     {
-        Firebase ref = new Firebase("https://elkriverdil2019.firebaseio.com/notificationRequests");
-        ref.push().setValue(this);
+        FirebaseFirestore.getInstance().collection("notificationRequests").document().set(this);
     }
 }
