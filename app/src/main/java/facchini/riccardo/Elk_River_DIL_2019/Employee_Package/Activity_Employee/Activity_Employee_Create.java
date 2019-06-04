@@ -25,6 +25,7 @@ public class Activity_Employee_Create extends AppCompatActivity
 {
     private String uid = "";
     private String mail = "";
+    private String profilePic = "";
     private Address address;
     
     private boolean editing = false;
@@ -286,14 +287,15 @@ public class Activity_Employee_Create extends AppCompatActivity
                     .putExtra("address2", address2)
                     .putExtra("city", city)
                     .putExtra("zip", zip)
-                    .putExtra("phone", phone);
+                    .putExtra("phone", phone)
+                    .putExtra("profilePic", profilePic);
             startActivity(intent);
         } else
         {
             Bundle b = new Bundle();
             Employee employee = new Employee(uid, name, mail, address1, address2, city, zip, phone,
                     currentEmployee.getAverageReviews(), currentEmployee.getNumReviews(), currentEmployee.getTags(),
-                    currentEmployee.getHours());
+                    currentEmployee.getHours(), null); //TODO: ADD PIC
             b.putParcelable("CurrentEmployee", employee);
             intent.putExtras(b);
             startActivityForResult(intent, 0);

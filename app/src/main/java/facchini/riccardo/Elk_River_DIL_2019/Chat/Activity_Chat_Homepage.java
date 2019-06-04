@@ -2,8 +2,8 @@ package facchini.riccardo.Elk_River_DIL_2019.Chat;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -99,6 +99,7 @@ public class Activity_Chat_Homepage extends AppCompatActivity
                     intent.putExtra("thisUsername", chatData.getThisName());
                     intent.putExtra("otherUid", chatData.getOtherUid());
                     intent.putExtra("otherUsername", chatData.getOtherName());
+                    intent.putExtra("otherProfilePic", chatData.getOtherProfilePic());
                     startActivity(intent);
                 } catch (Exception e)
                 {

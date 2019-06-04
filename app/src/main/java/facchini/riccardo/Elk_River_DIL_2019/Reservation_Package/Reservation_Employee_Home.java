@@ -8,9 +8,9 @@ public class Reservation_Employee_Home extends Reservation
 {
     private Customer customer;
     
-    public Reservation_Employee_Home(Date date, String type, Customer customer)
+    public Reservation_Employee_Home(Date time, String type, Customer customer)
     {
-        super(date, type);
+        super(time, type);
         this.customer = customer;
     }
     

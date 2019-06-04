@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
@@ -51,7 +52,8 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
         else
             holder.imageNew.setVisibility(View.GONE);
         
-        //holder.profilePic.setImageResource();
+        ImageLoader.loadImage(context, chat.getOtherProfilePic(), holder.profilePic);
+        
         holder.textViewChatWith.setText(chat.getOtherName());
         holder.textViewWhen.setText(chat.getDateFormatted());
     }

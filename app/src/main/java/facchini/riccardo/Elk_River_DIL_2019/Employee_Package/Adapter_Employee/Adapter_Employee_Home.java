@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Employee_Home;
 
@@ -46,11 +48,13 @@ public class Adapter_Employee_Home extends RecyclerView.Adapter<Adapter_Employee
         Reservation_Employee_Home res = reservationCustomerHomeList.get(pos);
         Customer customer = res.getCustomer();
         
-        //customerUid = customer.getUid();
         
         holder.textViewCustomer.setText(customer.getName().concat(" ").concat(customer.getSurname()));
         holder.textViewWhen.setText(res.getDateFormatted());
         holder.customerUid = customer.getUid();
+        holder.customerProfilePic = customer.getProfilePicUrl();
+        
+        ImageLoader.loadImage(context, customer.getProfilePicUrl(), holder.imageAvatar);
     }
     
     @Override
@@ -63,7 +67,8 @@ public class Adapter_Employee_Home extends RecyclerView.Adapter<Adapter_Employee
     {
         TextView textViewCustomer, textViewWhen;
         ImageButton startChatButton;
-        String customerUid;
+        ImageView imageAvatar;
+        String customerUid, customerProfilePic;
         
         public Reservation_Employee_ViewHolder(@NonNull View itemView)
         {
@@ -72,6 +77,7 @@ public class Adapter_Employee_Home extends RecyclerView.Adapter<Adapter_Employee
             textViewCustomer = itemView.findViewById(R.id.textViewEmployeeName);
             textViewWhen = itemView.findViewById(R.id.textViewWhen);
             startChatButton = itemView.findViewById(R.id.startChatButton);
+            imageAvatar = itemView.findViewById(R.id.imageAvatar);
             
             startChatButton.setOnClickListener(new View.OnClickListener()
             {
@@ -96,6 +102,7 @@ public class Adapter_Employee_Home extends RecyclerView.Adapter<Adapter_Employee
             chatIntent.putExtra("thisUsername", thisUsername);
             chatIntent.putExtra("otherUid", customerUid);
             chatIntent.putExtra("otherUsername", textViewCustomer.getText());
+            chatIntent.putExtra("otherProfilePic", textViewCustomer.getText());
             v.getContext().startActivity(chatIntent);
         }
     }

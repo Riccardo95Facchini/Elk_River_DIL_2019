@@ -136,7 +136,7 @@ public class Fragment_Employee_Home extends Fragment
         {
             String name = doc.get("customerName").toString().substring(0, doc.get("customerName").toString().indexOf(' '));
             String surname = doc.get("customerName").toString().substring(doc.get("customerName").toString().indexOf(' ') + 1);
-            Customer c = new Customer(doc.get("customerUid").toString(), name, surname);
+            Customer c = new Customer(doc.get("customerUid").toString(), name, surname, doc.get("customerPic").toString());
             resList.add(new Reservation_Employee_Home(((Timestamp) doc.get("time")).toDate(), (String) doc.get("type"), c));
             
             if (resList.size() == snap.size())

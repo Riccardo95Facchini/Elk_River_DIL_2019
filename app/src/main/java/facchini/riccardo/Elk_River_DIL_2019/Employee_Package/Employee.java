@@ -22,10 +22,11 @@ public class Employee implements Parcelable
     private int numReviews;
     private ArrayList<String> tags;
     private Map<String, List<String>> hours;
+    private String profilePicUrl;
     
     public Employee(String uid, String name, String mail, String address1, String address2, String city,
                     String zip, String phone, double averageReviews, int numReviews,
-                    ArrayList<String> tags, Map<String, List<String>> hours)
+                    ArrayList<String> tags, Map<String, List<String>> hours, String profilePicUrl)
     {
         this.uid = uid;
         this.name = name;
@@ -39,22 +40,24 @@ public class Employee implements Parcelable
         this.numReviews = numReviews;
         this.tags = new ArrayList<>(tags);
         this.hours = new HashMap<>(hours);
+        this.profilePicUrl = profilePicUrl;
     }
     
-    public Employee(Employee s)
+    public Employee(Employee e)
     {
-        this.uid = s.uid;
-        this.name = s.name;
-        this.mail = s.mail;
-        this.address1 = s.address1;
-        this.address2 = s.address2;
-        this.city = s.city;
-        this.zip = s.zip;
-        this.phone = s.phone;
-        this.averageReviews = s.averageReviews;
-        this.numReviews = s.numReviews;
-        this.tags = new ArrayList<>(s.tags);
-        this.hours = new HashMap<>(s.hours);
+        this.uid = e.uid;
+        this.name = e.name;
+        this.mail = e.mail;
+        this.address1 = e.address1;
+        this.address2 = e.address2;
+        this.city = e.city;
+        this.zip = e.zip;
+        this.phone = e.phone;
+        this.averageReviews = e.averageReviews;
+        this.numReviews = e.numReviews;
+        this.tags = new ArrayList<>(e.tags);
+        this.hours = new HashMap<>(e.hours);
+        this.profilePicUrl = e.profilePicUrl;
     }
     
     public Employee(Map<String, Object> m)
@@ -78,6 +81,7 @@ public class Employee implements Parcelable
         this.numReviews = (int) ((long) m.get("numReviews"));
         this.tags = new ArrayList<>((ArrayList<String>) m.get("tags"));
         this.hours = new HashMap<>((HashMap<String, List<String>>) m.get("hours"));
+        this.profilePicUrl = (String) m.get("profilePicUrl");
     }
     
     @Override
@@ -95,6 +99,7 @@ public class Employee implements Parcelable
         dest.writeInt(numReviews);
         dest.writeList(new ArrayList<>(tags));
         dest.writeMap(new HashMap<>(hours));
+        dest.writeString(profilePicUrl);
     }
     
     private Employee(Parcel in)
@@ -111,6 +116,7 @@ public class Employee implements Parcelable
         this.numReviews = in.readInt();
         this.tags = in.readArrayList(Employee.class.getClassLoader());
         this.hours = in.readHashMap(Employee.class.getClassLoader());
+        this.profilePicUrl = in.readString();
     }
     
     public static final Parcelable.Creator<Employee> CREATOR = new Parcelable.Creator<Employee>()
@@ -214,6 +220,8 @@ public class Employee implements Parcelable
     public double getAverageReviews() {return averageReviews;}
     
     public int getNumReviews() {return numReviews;}
+    
+    public String getProfilePicUrl() {return profilePicUrl;}
     
     @Override
     public int describeContents()

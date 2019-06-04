@@ -169,6 +169,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         chatIntent.putExtra("thisUsername", sharedPref.getString(getString(R.string.current_user_username_key), ""));
         chatIntent.putExtra("otherUid", selectedEmployee.getUid());
         chatIntent.putExtra("otherUsername", selectedEmployee.getName());
+        chatIntent.putExtra("otherProfilePic", selectedEmployee.getProfilePicUrl());
         startActivity(chatIntent);
     }
     
@@ -429,22 +430,25 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         }
         
         String customerName = sharedPref.getString(getString(R.string.current_user_username_key), "");
+        String customerPic = sharedPref.getString(getString(R.string.current_user_pic_key), "");
         
         String thisUid = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE)
                 .getString(getString(R.string.current_user_uid_key), "");
         
         String servicedUid;
+        String employeePic = "";
         
         if (isSpot)
             servicedUid = selectedSpot.getUid();
         else
         {
             servicedUid = selectedEmployee.getUid();
+            employeePic = selectedEmployee.getProfilePicUrl();
             new Notification(servicedUid, customerName, Notification.NOTIFICATION_RESERVATION, "", this);
         }
         
         
-        ReservationDatabase reservationDatabase = new ReservationDatabase(fullDate, type, servicedUid, thisUid, customerName);
+        ReservationDatabase reservationDatabase = new ReservationDatabase(fullDate, type, servicedUid, thisUid, customerName, customerPic, employeePic);
         db.collection("reservations").add(reservationDatabase);
         
         

@@ -11,9 +11,9 @@ public class Reservation_Customer_Home extends Reservation
     private Fishing_Spot fishingSpot;
     private String resUid;
     
-    public Reservation_Customer_Home(Date date, String type, Employee employee, String resUid)
+    public Reservation_Customer_Home(Date time, String type, Employee employee, String resUid)
     {
-        super(date, type);
+        super(time, type);
         this.employee = employee;
         this.fishingSpot = null;
         this.resUid = resUid;

@@ -156,6 +156,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         chatIntent.putExtra("thisUsername", pref.getString(getString(R.string.current_user_username_key), ""));
         chatIntent.putExtra("otherUid", employee.getUid());
         chatIntent.putExtra("otherUsername", employee.getName());
+        chatIntent.putExtra("otherProfilePic", employee.getProfilePicUrl());
         startActivity(chatIntent);
     }
 }

@@ -45,7 +45,7 @@ public class Activity_Employee_TagHours extends AppCompatActivity
     
     private Employee currentEmployee = null;
     private boolean editing = false;
-    private String uid, mail, phone, name, address1, address2, city, zip;
+    private String uid, mail, phone, name, address1, address2, city, zip, profilePic;
     
     private ArrayAdapter<String> adapter;
     
@@ -342,6 +342,7 @@ public class Activity_Employee_TagHours extends AppCompatActivity
             address2 = intent.getStringExtra("address2");
             city = intent.getStringExtra("city");
             zip = intent.getStringExtra("zip");
+            profilePic = intent.getStringExtra("profilePic");
         }
     }
     
@@ -356,7 +357,7 @@ public class Activity_Employee_TagHours extends AppCompatActivity
         final Employee employee;
         if (!editing)
         {
-            employee = new Employee(uid, name, mail, address1, address2, city, zip, phone, 0, 0, tags, hours);
+            employee = new Employee(uid, name, mail, address1, address2, city, zip, phone, 0, 0, tags, hours, profilePic);
             employeesReference.document(uid).set(employee);
             startActivity(new Intent(this, Activity_Login.class));
         } else
@@ -364,7 +365,7 @@ public class Activity_Employee_TagHours extends AppCompatActivity
             uid = currentEmployee.getUid();
             employee = new Employee(uid, currentEmployee.getName(), currentEmployee.getMail(), currentEmployee.getAddress1(),
                     currentEmployee.getAddress2(), currentEmployee.getCity(), currentEmployee.getZip(), currentEmployee.getPhone(),
-                    currentEmployee.getAverageReviews(), currentEmployee.getNumReviews(), tags, hours);
+                    currentEmployee.getAverageReviews(), currentEmployee.getNumReviews(), tags, hours, currentEmployee.getProfilePicUrl());
             
             employeesReference.document(uid).set(employee);
             setResult(Activity.RESULT_OK);

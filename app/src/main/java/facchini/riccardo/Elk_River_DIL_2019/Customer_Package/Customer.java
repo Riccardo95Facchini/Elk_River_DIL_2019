@@ -23,11 +23,12 @@ public class Customer
         this.profilePicUrl = profilePicUrl;
     }
     
-    public Customer(String uid, String name, String surname)
+    public Customer(String uid, String name, String surname, String profilePicUrl)
     {
         this.uid = uid;
         this.name = name;
         this.surname = surname;
+        this.profilePicUrl = profilePicUrl;
     }
     
     public Customer(Map<String, Object> c)
