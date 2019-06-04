@@ -26,10 +26,10 @@ public class ImageUploader
     private StorageReference profilePics;
     private String uid;
     private String storageUrl;
-    private boolean editing;
+    private boolean editing, isCustomer;
     private FirebaseStorage db;
     
-    public ImageUploader(Context context, ImageView imageView, ProgressBar uploadBar, String uid, String storageUrl, boolean editing)
+    public ImageUploader(Context context, ImageView imageView, ProgressBar uploadBar, String uid, String storageUrl, boolean editing, boolean isCustomer)
     {
         this.context = context;
         this.imageView = imageView;
@@ -37,6 +37,7 @@ public class ImageUploader
         this.uid = uid;
         this.storageUrl = storageUrl;
         this.editing = editing;
+        this.isCustomer = isCustomer;
         db = FirebaseStorage.getInstance();
     }
     
@@ -68,7 +69,12 @@ public class ImageUploader
                                 storageUrl = uri.toString();
                                 
                                 if (editing)
-                                    FirebaseFirestore.getInstance().collection("customers").document(uid).update("profilePicUrl", storageUrl);
+                                {
+                                    if(isCustomer)
+                                        FirebaseFirestore.getInstance().collection("customers").document(uid).update("profilePicUrl", storageUrl);
+                                    else
+                                        FirebaseFirestore.getInstance().collection("employees").document(uid).update("profilePicUrl", storageUrl);
+                                }
                                 
                                 ImageLoader.loadImage(context, storageUrl, imageView);
                                 uploadBar.setVisibility(View.GONE);

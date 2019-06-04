@@ -72,7 +72,7 @@ public class Activity_Customer_Create extends AppCompatActivity
         if (editing)
             fillFields();
         
-        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing);
+        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing, true);
         
         imageView.setOnClickListener(new View.OnClickListener()
         {

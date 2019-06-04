@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 
@@ -29,6 +31,7 @@ public class Activity_Employee_Profile extends AppCompatActivity
     private TextView textPhoneMail;
     private TextView textAddress;
     private RatingBar ratingAvg;
+    private ImageView imageView;
     
     Context context;
     private Employee employee;
@@ -63,6 +66,7 @@ public class Activity_Employee_Profile extends AppCompatActivity
         textAddress = findViewById(R.id.textAddress);
         buttonEdit = findViewById(R.id.buttonEdit);
         ratingAvg = findViewById(R.id.ratingAvg);
+        imageView = findViewById(R.id.imageView);
         
         context = this;
         buttonEdit.setOnClickListener(new View.OnClickListener()
@@ -82,6 +86,7 @@ public class Activity_Employee_Profile extends AppCompatActivity
     
     private void fillProfile()
     {
+        ImageLoader.loadImage(this, employee.getProfilePicUrl(), imageView);
         textEmployeeName.setText(employee.getName());
         textAddress.setText(String.format("%s %s %s %s", employee.getAddress1(), employee.getAddress2(),
                 employee.getCity(), employee.getZip()));

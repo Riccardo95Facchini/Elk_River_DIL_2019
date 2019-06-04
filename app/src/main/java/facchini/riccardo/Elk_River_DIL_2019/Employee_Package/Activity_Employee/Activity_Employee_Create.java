@@ -12,21 +12,33 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.storage.StorageTask;
 
 import java.io.IOException;
 import java.util.Locale;
 
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.ImageUploader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
 public class Activity_Employee_Create extends AppCompatActivity
 {
+    private static final int IMAGE_REQUEST = 1;
+    
     private String uid = "";
     private String mail = "";
     private String profilePic = "";
     private Address address;
+    
+    private String storageUrl = "";
+    private StorageTask taskUpload;
+    private ImageUploader imageUploader;
+    private ImageView imageView;
     
     private boolean editing = false;
     private Employee currentEmployee = null;
@@ -54,6 +66,7 @@ public class Activity_Employee_Create extends AppCompatActivity
             setTitle(R.string.edit);
             editing = true;
             uid = currentEmployee.getUid();
+            storageUrl = currentEmployee.getProfilePicUrl();
         } else
         {
             uid = intent.getStringExtra("uid");
@@ -65,6 +78,9 @@ public class Activity_Employee_Create extends AppCompatActivity
         
         if (editing)
             continueButton.setEnabled(true);
+        
+        ProgressBar uploadBar = findViewById(R.id.uploadBar);
+        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing, false);
     }
     
     /**
@@ -81,6 +97,16 @@ public class Activity_Employee_Create extends AppCompatActivity
         zipText = findViewById(R.id.zipText);
         phoneText = findViewById(R.id.phoneText);
         mailText = findViewById(R.id.mailText);
+        imageView = findViewById(R.id.imageView);
+        
+        imageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                openFilePicker();
+            }
+        });
         
         if (!mail.isEmpty())
             mailText.setText(mail);
@@ -103,7 +129,7 @@ public class Activity_Employee_Create extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                if (checkAddress())
+                if (checkAddress() && checkImage())
                     continueToTags();
             }
         });
@@ -267,6 +293,14 @@ public class Activity_Employee_Create extends AppCompatActivity
                 mailText.getText().toString().length() > 0;
     }
     
+    private void openFilePicker()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+    }
+    
     private void continueToTags()
     {
         Intent intent = new Intent(this, Activity_Employee_TagHours.class);
@@ -311,7 +345,24 @@ public class Activity_Employee_Create extends AppCompatActivity
         {
             setResult(Activity.RESULT_OK);
             finish();
+        } else if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null)
+        {
+            taskUpload = imageUploader.upload(data.getData());
         }
+    }
+    
+    private boolean checkImage()
+    {
+        if (taskUpload != null)
+        {
+            if (taskUpload.isInProgress() || imageUploader.getStorageUrl().isEmpty())
+            {
+                Toast.makeText(this, getString(R.string.wait_for_image_upload), Toast.LENGTH_SHORT).show();
+                return false;
+            } else
+                storageUrl = imageUploader.getStorageUrl();
+        }
+        return true;
     }
     
     /**
