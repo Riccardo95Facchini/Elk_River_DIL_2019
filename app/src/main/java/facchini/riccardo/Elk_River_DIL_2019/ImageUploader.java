@@ -53,7 +53,7 @@ public class ImageUploader
         
         storageUrl = "";
         
-        profilePics = db.getReference("profile_pics").child(uid + "_" + System.currentTimeMillis());
+        profilePics = db.getReference("profile_pics").child(uid);
         
         return profilePics.putFile(image)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()

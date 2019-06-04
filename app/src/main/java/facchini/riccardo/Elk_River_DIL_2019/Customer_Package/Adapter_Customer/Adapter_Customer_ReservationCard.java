@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.A
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation;
@@ -44,7 +48,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     public Reservation_Customer_ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.card_customer_home, null);
+        View view = inflater.inflate(R.layout.card_customer_reservation, null);
         return new Reservation_Customer_ViewHolder(view, itemListener);
     }
     
@@ -61,16 +65,18 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
             holder.textViewName.setText(fishingSpot.getName());
             holder.textViewLocation.setText(fishingSpot.displayCoordinates());
             holder.textViewWhen.setText(res.getDateFormatted());
-            
+            Glide.with(context).load(R.drawable.ic_fishing_pole_black_24dp).placeholder(R.drawable.ic_fishing_pole_black_24dp).fitCenter().centerCrop().into(holder.profilePic);
         } else
         {
             Employee employee = res.getEmployee();
             holder.isSpot = false;
             
             if (res.getType().equals(Reservation.INSTRUCTOR))
-                holder.textViewName.setText(String.format("%s - %s", employee.getName(), context.getString(R.string.fishing_instructor)));
+                holder.textViewName.setText(String.format("%s\n%s", employee.getName(), context.getString(R.string.fishing_instructor)));
             else
-                holder.textViewName.setText(String.format("%s - %s", employee.getName(), context.getString(R.string.rental_equipment)));
+                holder.textViewName.setText(String.format("%s\n%s", employee.getName(), context.getString(R.string.rental_equipment)));
+            
+            ImageLoader.loadImage(context, employee.getProfilePicUrl(), holder.profilePic);
             holder.textViewLocation.setText(employee.displayFullAddress());
             holder.textViewWhen.setText(res.getDateFormatted());
         }
@@ -86,6 +92,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
     {
         TextView textViewName, textViewLocation, textViewWhen;
         ImageButton infoButton;
+        ImageView profilePic;
         String type;
         boolean isSpot;
         
@@ -97,6 +104,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
             textViewLocation = itemView.findViewById(R.id.textViewAddress);
             textViewWhen = itemView.findViewById(R.id.textViewWhen);
             infoButton = itemView.findViewById(R.id.infoButton);
+            profilePic = itemView.findViewById(R.id.profilePic);
             
             infoButton.setOnClickListener(new View.OnClickListener()
             {

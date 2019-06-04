@@ -6,12 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.List;
 
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
@@ -50,6 +52,7 @@ public class Adapter_Customer_SearchEmployeeCard extends RecyclerView.Adapter<Ad
         holder.textViewName.setText(employee.getName());
         holder.textViewAddress.setText(employee.displayFullAddress());
         holder.ratingBar.setRating((float) employee.getAverageReviews());
+        ImageLoader.loadImage(context, employee.getProfilePicUrl(), holder.profilePic);
     }
     
     @Override
@@ -62,6 +65,7 @@ public class Adapter_Customer_SearchEmployeeCard extends RecyclerView.Adapter<Ad
     {
         TextView textViewName, textViewAddress;
         RatingBar ratingBar;
+        ImageView profilePic;
         
         Employees_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
         {
@@ -70,6 +74,7 @@ public class Adapter_Customer_SearchEmployeeCard extends RecyclerView.Adapter<Ad
             textViewName = itemView.findViewById(R.id.textViewEmployeeName);
             textViewAddress = itemView.findViewById(R.id.textViewAddress);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            profilePic = itemView.findViewById(R.id.profilePic);
             
             
             itemView.setOnClickListener(new View.OnClickListener()
