@@ -26,33 +26,33 @@ public class ImageUploader
     private StorageReference profilePics;
     private String uid;
     private String storageUrl;
-    private Uri image;
     private boolean editing;
+    private FirebaseStorage db;
     
-    public ImageUploader(Context context, ImageView imageView, ProgressBar uploadBar, String uid, Uri image, boolean editing)
+    public ImageUploader(Context context, ImageView imageView, ProgressBar uploadBar, String uid, String storageUrl, boolean editing)
     {
         this.context = context;
         this.imageView = imageView;
         this.uploadBar = uploadBar;
-        this.profilePics = null;
         this.uid = uid;
-        this.image = image;
-        this.storageUrl = "";
+        this.storageUrl = storageUrl;
         this.editing = editing;
+        db = FirebaseStorage.getInstance();
     }
     
-    public StorageTask upload()
+    public StorageTask upload(Uri image)
     {
         imageView.setClickable(false);
         imageView.setColorFilter(Color.argb(128, 255, 255, 255));
         uploadBar.setProgress(0);
         uploadBar.setVisibility(View.VISIBLE);
+        
+        if (storageUrl != null && !storageUrl.isEmpty())
+            db.getReferenceFromUrl(storageUrl).delete();
+        
         storageUrl = "";
         
-        if (profilePics != null)
-            profilePics.delete();
-        
-        profilePics = FirebaseStorage.getInstance().getReference("profile_pics").child(uid + "_" + System.currentTimeMillis());
+        profilePics = db.getReference("profile_pics").child(uid + "_" + System.currentTimeMillis());
         
         return profilePics.putFile(image)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
@@ -84,7 +84,6 @@ public class ImageUploader
                     @Override
                     public void onFailure(@NonNull Exception e)
                     {
-                        image = null;
                         imageView.setClickable(true);
                         imageView.setImageResource(R.drawable.default_avatar);
                         imageView.setColorFilter(Color.argb(0, 0, 0, 0));

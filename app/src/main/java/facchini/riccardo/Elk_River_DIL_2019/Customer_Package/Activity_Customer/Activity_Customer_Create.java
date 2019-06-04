@@ -32,7 +32,6 @@ public class Activity_Customer_Create extends AppCompatActivity
     private String storageUrl = "";
     private StorageTask taskUpload;
     private ImageUploader imageUploader;
-    private boolean editing;
     
     CollectionReference customers;
     
@@ -42,8 +41,6 @@ public class Activity_Customer_Create extends AppCompatActivity
     private EditText surnameText;
     private EditText phoneText;
     private EditText mailText;
-    //ProgressBar
-    private ProgressBar uploadBar;
     
     private static final int IMAGE_REQUEST = 1;
     
@@ -60,8 +57,7 @@ public class Activity_Customer_Create extends AppCompatActivity
         mail = intent.getStringExtra("mail");
         phone = intent.getStringExtra("phone");
         storageUrl = intent.getStringExtra("storageUrl");
-        editing = intent.getBooleanExtra("editing", false);
-        
+        boolean editing = intent.getBooleanExtra("editing", false);
         
         customers = FirebaseFirestore.getInstance().collection("customers");
         
@@ -71,10 +67,12 @@ public class Activity_Customer_Create extends AppCompatActivity
         surnameText = findViewById(R.id.address1Text);
         phoneText = findViewById(R.id.phoneText);
         mailText = findViewById(R.id.mailText);
-        uploadBar = findViewById(R.id.uploadBar);
+        ProgressBar uploadBar = findViewById(R.id.uploadBar);
         
         if (editing)
             fillFields();
+        
+        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing);
         
         imageView.setOnClickListener(new View.OnClickListener()
         {
@@ -103,7 +101,7 @@ public class Activity_Customer_Create extends AppCompatActivity
     {
         ImageLoader.loadImage(this, storageUrl, imageView);
         firstNameText.setText(nameSurname.substring(0, nameSurname.indexOf(" ")));
-        surnameText.setText(nameSurname.substring(nameSurname.indexOf(" ")));
+        surnameText.setText(nameSurname.substring(nameSurname.indexOf(" ") + 1));
         phoneText.setText(phone);
         mailText.setText(mail);
     }
@@ -122,8 +120,7 @@ public class Activity_Customer_Create extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null)
         {
-            imageUploader = new ImageUploader(this, imageView, uploadBar, uid, data.getData(), editing);
-            taskUpload = imageUploader.upload();
+            taskUpload = imageUploader.upload(data.getData());
         }
     }
     
