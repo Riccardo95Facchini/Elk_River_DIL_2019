@@ -119,4 +119,7 @@
     <string name="add_fishing_spot">Add Fishing Spot</string>
     <string name="new_chat_message_from">New chat message from: </string>
     <string name="new_reservation_from">New reservation from: </string>
+    <string name="upload_error">Something went wrong uploading the image</string>
+    <string name="image_uploaded">Image uploaded</string>
+    <string name="wait_for_image_upload">Wait for image upload to finish</string>
 </resources>

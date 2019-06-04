@@ -9,15 +9,18 @@ public class Customer
     private String surname;
     private String phone;
     private String mail;
+    private String storageUrl;
     
     
-    public Customer(String uid, String name, String surname, String phone, String mail)
+    public Customer(String uid, String name, String surname, String phone, String mail, String storageUrl)
     {
         this.uid = uid;
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.mail = mail;
+        this.mail = mail;
+        this.storageUrl = storageUrl;
     }
     
     public Customer(String uid, String name, String surname)
@@ -34,6 +37,7 @@ public class Customer
         this.surname = (String) c.get("surname");
         this.phone = (String) c.get("phone");
         this.mail = (String) c.get("mail");
+        this.storageUrl = (String) c.get("storageUrl");
     }
     
     public Customer() {}
@@ -48,6 +52,7 @@ public class Customer
         return String.format("Name: %s %s\nPhone: %s\nMail: %s", name, surname, phone.isEmpty() ? "N/A" : phone, mail.isEmpty() ? "N/A" : mail);
     }
     
+    public String getStorageUrl() {return storageUrl;}
     
     public String getUid() {return uid;}
     
