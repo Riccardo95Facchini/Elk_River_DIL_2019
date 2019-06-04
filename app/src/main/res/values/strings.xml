@@ -78,7 +78,7 @@
     <string name="addressSearchInput">Insert the address from where you want to search</string>
     <string name="refresh">Refresh</string>
     <string name="chat">Chat</string>
-    <string name="write_a_message">Write a message...</string>
+    <string name="write_a_message">Write a message…</string>
     <string name="conversations">Conversations</string>
     <string name="current_user_uid_key">current_user_uid_key</string>
     <string name="current_user_username_key">current_user_username_key</string>
@@ -109,7 +109,7 @@
     <string name="maps_api_key">AIzaSyCub6Mcwa1zSQ7LYZGG9m6_IgeI_bXv880</string>
     <string name="fishing_spot_name">Fishing Spot Name</string>
     <string name="check_on_map">Check on map</string>
-    <string name="name_already_used">Name already used, loading it on map...</string>
+    <string name="name_already_used">Name already used, loading it on map…</string>
     <string name="enter_name_fishing_spot">Please enter a name for the fishing spot</string>
     <string name="enter_valid_lat">Please enter a valid latitude</string>
     <string name="enter_valid_lng">Please enter a valid longitude</string>
@@ -122,4 +122,6 @@
     <string name="upload_error">Something went wrong uploading the image</string>
     <string name="image_uploaded">Image uploaded</string>
     <string name="wait_for_image_upload">Wait for image upload to finish</string>
+    <string name="cant_be_empty">Can\'t be empty</string>
+    <string name="enter_valid_mail_address">Enter a valid mail address</string>
 </resources>

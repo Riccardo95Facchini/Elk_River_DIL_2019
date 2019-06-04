@@ -2,14 +2,11 @@ package facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -18,18 +15,13 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 
 import facchini.riccardo.Elk_River_DIL_2019.Activity_Login;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
+import facchini.riccardo.Elk_River_DIL_2019.ImageUploader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
 public class Activity_Customer_Create extends AppCompatActivity
@@ -40,15 +32,8 @@ public class Activity_Customer_Create extends AppCompatActivity
     private String storageUrl = null;
     private Uri image = null;
     private StorageTask taskUpload;
+    private ImageUploader imageUploader;
     
-    //Firestore
-    private FirebaseFirestore db;
-    private CollectionReference customers;
-    private StorageReference profilePics;
-    
-    //UI
-    //Buttons
-    private Button sendButton;
     private ImageButton imageButton;
     //Text view
     private EditText firstNameText;
@@ -72,17 +57,13 @@ public class Activity_Customer_Create extends AppCompatActivity
         mail = intent.getStringExtra("mail");
         phone = intent.getStringExtra("phone");
         
-        //Initialize UI elements
-        sendButton = findViewById(R.id.sendButton);
+        Button sendButton = findViewById(R.id.sendButton);
         imageButton = findViewById(R.id.imageButton);
         firstNameText = findViewById(R.id.employeeNameText);
         surnameText = findViewById(R.id.address1Text);
         phoneText = findViewById(R.id.phoneText);
         mailText = findViewById(R.id.mailText);
         uploadBar = findViewById(R.id.uploadBar);
-        
-        sendButton.setEnabled(false);
-        profilePics = FirebaseStorage.getInstance().getReference("profile_pics");
         
         imageButton.setOnClickListener(new View.OnClickListener()
         {
@@ -99,7 +80,8 @@ public class Activity_Customer_Create extends AppCompatActivity
             public void onClick(View v)
             {
                 
-                sendData();
+                if (checkImage() && checkText())
+                    sendData();
             }
         });
         
@@ -140,7 +122,7 @@ public class Activity_Customer_Create extends AppCompatActivity
                 try
                 {
                     if (!mail.isEmpty())
-                        mailText.setVisibility(View.GONE);
+                        mailText.setText(mail);
                 } catch (Exception e)
                 {
                     mail = "";
@@ -149,7 +131,7 @@ public class Activity_Customer_Create extends AppCompatActivity
                 try
                 {
                     if (!phone.isEmpty())
-                        phoneText.setVisibility(View.GONE);
+                        phoneText.setText(phone);
                 } catch (Exception e)
                 {
                     phone = "";
@@ -158,83 +140,12 @@ public class Activity_Customer_Create extends AppCompatActivity
             }
         });
         
-        firstNameText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if (s.toString().trim().length() == 0)
-                    sendButton.setEnabled(false);
-                else if (surnameText.getText().toString().length() > 0)
-                    sendButton.setEnabled(true);
-            }
-            
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-        
-        surnameText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if (s.toString().trim().length() == 0)
-                    sendButton.setEnabled(false);
-                else if (firstNameText.getText().toString().length() > 0)
-                    sendButton.setEnabled(true);
-            }
-            
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
     }
     
     private void uploadImage()
     {
-        imageButton.setColorFilter(Color.argb(128, 255, 255, 255));
-        uploadBar.setProgress(0);
-        uploadBar.setVisibility(View.VISIBLE);
-        sendButton.setEnabled(false);
-        storageUrl = null;
-        
-        taskUpload = profilePics.child(uid).putFile(image)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-                {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                    {
-                        storageUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                        imageButton.setColorFilter(Color.argb(0, 0, 0, 0));
-                        uploadBar.setVisibility(View.GONE);
-                        Toast.makeText(Activity_Customer_Create.this, getString(R.string.image_uploaded), Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener()
-                {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        image = null;
-                        storageUrl = null;
-                        imageButton.setImageResource(R.drawable.default_avatar);
-                        imageButton.setColorFilter(Color.argb(0, 0, 0, 0));
-                        uploadBar.setVisibility(View.GONE);
-                        Toast.makeText(Activity_Customer_Create.this, getString(R.string.upload_error), Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
-                {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot)
-                    {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        uploadBar.setProgress((int) progress);
-                    }
-                });
+        imageUploader = new ImageUploader(this, imageButton, uploadBar, uid, image);
+        taskUpload = imageUploader.upload();
     }
     
     private String getFileExtension()
@@ -242,21 +153,66 @@ public class Activity_Customer_Create extends AppCompatActivity
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(getContentResolver().getType(image));
     }
     
-    private void sendData()
+    /**
+     * Check if an image has been uploaded or is being uploaded
+     *
+     * @return True if image uploaded or never selected (default avatar), false if it's still uploading
+     */
+    private boolean checkImage()
     {
-        if (taskUpload != null && taskUpload.isInProgress())
+        if (taskUpload != null)
         {
-            Toast.makeText(this, getString(R.string.wait_for_image_upload), Toast.LENGTH_SHORT).show();
-            return;
+            if (taskUpload.isInProgress() || imageUploader.getStorageUrl() == null)
+            {
+                Toast.makeText(this, getString(R.string.wait_for_image_upload), Toast.LENGTH_SHORT).show();
+                return false;
+            } else
+                storageUrl = imageUploader.getStorageUrl();
+        }
+        return true;
+    }
+    
+    /**
+     * Checks if the mandatory fields contain text and if the mail is correct, sets errors when false
+     *
+     * @return True if all mandatory fields contain text adn email is correct, false otherwise
+     */
+    private boolean checkText()
+    {
+        boolean isCheckOk = true;
+        
+        if (firstNameText.getText().toString().trim().isEmpty())
+        {
+            firstNameText.setError(getString(R.string.cant_be_empty));
+            isCheckOk = false;
+        }
+        if (surnameText.getText().toString().trim().isEmpty())
+        {
+            surnameText.setError(getString(R.string.cant_be_empty));
+            isCheckOk = false;
+        }
+        mail = mailText.getText().toString().trim();
+        
+        if (mail.isEmpty())
+        {
+            mailText.setError(getString(R.string.cant_be_empty));
+            isCheckOk = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches())
+        {
+            mailText.setError(getString(R.string.enter_valid_mail_address));
+            isCheckOk = false;
         }
         
-        db = FirebaseFirestore.getInstance();
-        customers = db.collection("customers");
-        mail = mail.isEmpty() ? mailText.getText().toString() : mail;
+        return isCheckOk;
+    }
+    
+    private void sendData()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference customers = db.collection("customers");
         phone = phone.isEmpty() ? phoneText.getText().toString() : phone;
         Customer newCustomer = new Customer(uid, firstNameText.getText().toString(), surnameText.getText().toString(), phone, mail, storageUrl);
         customers.document(uid).set(newCustomer);
-        
         startActivity(new Intent(this, Activity_Login.class));
     }
 }
