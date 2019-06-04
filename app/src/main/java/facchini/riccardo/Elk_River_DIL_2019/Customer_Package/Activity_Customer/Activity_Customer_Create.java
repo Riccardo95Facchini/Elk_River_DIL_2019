@@ -2,16 +2,14 @@ package facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Activity_Customer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -21,6 +19,7 @@ import com.google.firebase.storage.StorageTask;
 
 import facchini.riccardo.Elk_River_DIL_2019.Activity_Login;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.ImageUploader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
@@ -28,13 +27,16 @@ public class Activity_Customer_Create extends AppCompatActivity
 {
     private String uid;
     private String mail;
+    private String nameSurname;
     private String phone;
-    private String storageUrl = null;
-    private Uri image = null;
+    private String storageUrl = "";
     private StorageTask taskUpload;
     private ImageUploader imageUploader;
+    private boolean editing;
     
-    private ImageButton imageButton;
+    CollectionReference customers;
+    
+    private ImageView imageView;
     //Text view
     private EditText firstNameText;
     private EditText surnameText;
@@ -54,18 +56,27 @@ public class Activity_Customer_Create extends AppCompatActivity
         //Get intent and extra
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
+        nameSurname = intent.getStringExtra("nameSurname");
         mail = intent.getStringExtra("mail");
         phone = intent.getStringExtra("phone");
+        storageUrl = intent.getStringExtra("storageUrl");
+        editing = intent.getBooleanExtra("editing", false);
+        
+        
+        customers = FirebaseFirestore.getInstance().collection("customers");
         
         Button sendButton = findViewById(R.id.sendButton);
-        imageButton = findViewById(R.id.imageButton);
+        imageView = findViewById(R.id.imageView);
         firstNameText = findViewById(R.id.employeeNameText);
         surnameText = findViewById(R.id.address1Text);
         phoneText = findViewById(R.id.phoneText);
         mailText = findViewById(R.id.mailText);
         uploadBar = findViewById(R.id.uploadBar);
         
-        imageButton.setOnClickListener(new View.OnClickListener()
+        if (editing)
+            fillFields();
+        
+        imageView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -88,6 +99,15 @@ public class Activity_Customer_Create extends AppCompatActivity
         handleTextsOnCreate();
     }
     
+    private void fillFields()
+    {
+        ImageLoader.loadImage(this, storageUrl, imageView);
+        firstNameText.setText(nameSurname.substring(0, nameSurname.indexOf(" ")));
+        surnameText.setText(nameSurname.substring(nameSurname.indexOf(" ")));
+        phoneText.setText(phone);
+        mailText.setText(mail);
+    }
+    
     private void openFilePicker()
     {
         Intent intent = new Intent();
@@ -102,9 +122,8 @@ public class Activity_Customer_Create extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null)
         {
-            image = data.getData();
-            imageButton.setImageURI(image);
-            uploadImage();
+            imageUploader = new ImageUploader(this, imageView, uploadBar, uid, data.getData(), editing);
+            taskUpload = imageUploader.upload();
         }
     }
     
@@ -142,17 +161,6 @@ public class Activity_Customer_Create extends AppCompatActivity
         
     }
     
-    private void uploadImage()
-    {
-        imageUploader = new ImageUploader(this, imageButton, uploadBar, uid, image);
-        taskUpload = imageUploader.upload();
-    }
-    
-    private String getFileExtension()
-    {
-        return MimeTypeMap.getSingleton().getExtensionFromMimeType(getContentResolver().getType(image));
-    }
-    
     /**
      * Check if an image has been uploaded or is being uploaded
      *
@@ -162,7 +170,7 @@ public class Activity_Customer_Create extends AppCompatActivity
     {
         if (taskUpload != null)
         {
-            if (taskUpload.isInProgress() || imageUploader.getStorageUrl() == null)
+            if (taskUpload.isInProgress() || imageUploader.getStorageUrl().isEmpty())
             {
                 Toast.makeText(this, getString(R.string.wait_for_image_upload), Toast.LENGTH_SHORT).show();
                 return false;
@@ -208,8 +216,6 @@ public class Activity_Customer_Create extends AppCompatActivity
     
     private void sendData()
     {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference customers = db.collection("customers");
         phone = phone.isEmpty() ? phoneText.getText().toString() : phone;
         Customer newCustomer = new Customer(uid, firstNameText.getText().toString(), surnameText.getText().toString(), phone, mail, storageUrl);
         customers.document(uid).set(newCustomer);

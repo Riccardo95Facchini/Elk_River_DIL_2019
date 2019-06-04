@@ -5,12 +5,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -20,47 +21,59 @@ import com.google.firebase.storage.UploadTask;
 public class ImageUploader
 {
     private Context context;
-    private ImageButton imageButton;
+    private ImageView imageView;
     private ProgressBar uploadBar;
     private StorageReference profilePics;
     private String uid;
     private String storageUrl;
     private Uri image;
+    private boolean editing;
     
-    public ImageUploader(Context context, ImageButton imageButton, ProgressBar uploadBar, String uid, Uri image)
+    public ImageUploader(Context context, ImageView imageView, ProgressBar uploadBar, String uid, Uri image, boolean editing)
     {
         this.context = context;
-        this.imageButton = imageButton;
+        this.imageView = imageView;
         this.uploadBar = uploadBar;
-        this.profilePics = FirebaseStorage.getInstance().getReference("profile_pics");
+        this.profilePics = null;
         this.uid = uid;
         this.image = image;
-        this.storageUrl = null;
+        this.storageUrl = "";
+        this.editing = editing;
     }
     
     public StorageTask upload()
     {
-        imageButton.setClickable(false);
-        imageButton.setColorFilter(Color.argb(128, 255, 255, 255));
+        imageView.setClickable(false);
+        imageView.setColorFilter(Color.argb(128, 255, 255, 255));
         uploadBar.setProgress(0);
         uploadBar.setVisibility(View.VISIBLE);
-        this.storageUrl = null;
+        storageUrl = "";
         
-        return profilePics.child(uid).putFile(image)
+        if (profilePics != null)
+            profilePics.delete();
+        
+        profilePics = FirebaseStorage.getInstance().getReference("profile_pics").child(uid + "_" + System.currentTimeMillis());
+        
+        return profilePics.putFile(image)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
                 {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                     {
-                        profilePics.child(uid).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                        profilePics.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
                         {
                             @Override
                             public void onSuccess(Uri uri)
                             {
-                                imageButton.setColorFilter(Color.argb(0, 0, 0, 0));
-                                uploadBar.setVisibility(View.GONE);
-                                imageButton.setClickable(true);
                                 storageUrl = uri.toString();
+                                
+                                if (editing)
+                                    FirebaseFirestore.getInstance().collection("customers").document(uid).update("profilePicUrl", storageUrl);
+                                
+                                ImageLoader.loadImage(context, storageUrl, imageView);
+                                uploadBar.setVisibility(View.GONE);
+                                imageView.setClickable(true);
+                                imageView.setColorFilter(Color.argb(0, 0, 0, 0));
                                 Toast.makeText(context, context.getString(R.string.image_uploaded), Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -72,9 +85,9 @@ public class ImageUploader
                     public void onFailure(@NonNull Exception e)
                     {
                         image = null;
-                        imageButton.setClickable(true);
-                        imageButton.setImageResource(R.drawable.default_avatar);
-                        imageButton.setColorFilter(Color.argb(0, 0, 0, 0));
+                        imageView.setClickable(true);
+                        imageView.setImageResource(R.drawable.default_avatar);
+                        imageView.setColorFilter(Color.argb(0, 0, 0, 0));
                         uploadBar.setVisibility(View.GONE);
                         Toast.makeText(context, context.getString(R.string.upload_error), Toast.LENGTH_SHORT).show();
                     }
