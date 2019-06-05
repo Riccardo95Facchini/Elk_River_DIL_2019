@@ -107,13 +107,6 @@ public class Activity_Employee extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (currentMenu == R.id.profile_menu)
-        {
-            super.onBackPressed();
-            currentMenu = bottomMenu.getSelectedItemId();
-            return;
-        }
-        
         if (backButton > 0)
             finish();
         else
@@ -191,11 +184,6 @@ public class Activity_Employee extends AppCompatActivity
         topMenu.getItem(2).setVisible(true);
         topMenu.getItem(3).setVisible(true);
         
-        if (currentMenu != R.id.profile_menu)
-            topMenu.getItem(1).setVisible(true);
-        else
-            topMenu.getItem(1).setVisible(false);
-        
         return true;
     }
     
@@ -228,7 +216,6 @@ public class Activity_Employee extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Employee_History()).commit();
                 return true;
             case R.id.profile_menu:
-                currentMenu = R.id.profile_menu;
                 Intent profileIntent = new Intent(getBaseContext(), Activity_Employee_Profile.class);
                 startActivity(profileIntent);
                 return true;
