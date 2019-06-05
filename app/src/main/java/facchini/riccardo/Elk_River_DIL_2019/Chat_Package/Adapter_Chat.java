@@ -50,7 +50,7 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
         if (!chat.isRead())
             holder.imageNew.setVisibility(View.VISIBLE);
         else
-            holder.imageNew.setVisibility(View.GONE);
+            holder.imageNew.setVisibility(View.INVISIBLE);
         
         ImageLoader.loadImage(context, chat.getOtherProfilePic(), holder.profilePic);
         
@@ -87,7 +87,7 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
                 {
                     if (itemClickListener != null)
                     {
-                        imageNew.setVisibility(View.GONE);
+                        imageNew.setVisibility(View.INVISIBLE);
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION)
                             itemListener.onItemClick(position);
