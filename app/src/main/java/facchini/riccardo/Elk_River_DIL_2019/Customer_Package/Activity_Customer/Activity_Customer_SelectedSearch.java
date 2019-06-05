@@ -43,9 +43,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
+import facchini.riccardo.Elk_River_DIL_2019.Chat_Package.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
-import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.Fragment_DatePicker;
 import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.Notification;

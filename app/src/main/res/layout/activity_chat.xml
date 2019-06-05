@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.Activity_Chat">
+    tools:context=".Chat_Package.Activity_Chat">
 
     <ScrollView
         android:id="@+id/scrollView"

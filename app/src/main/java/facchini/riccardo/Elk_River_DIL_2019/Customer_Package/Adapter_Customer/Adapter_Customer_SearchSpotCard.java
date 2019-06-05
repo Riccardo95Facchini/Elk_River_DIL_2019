@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 

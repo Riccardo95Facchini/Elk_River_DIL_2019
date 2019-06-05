@@ -18,7 +18,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
+import facchini.riccardo.Elk_River_DIL_2019.Chat_Package.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.R;

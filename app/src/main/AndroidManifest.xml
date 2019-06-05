@@ -19,8 +19,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo" />
         <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo" />
-        <activity android:name=".Chat.Activity_Chat_Homepage" />
-        <activity android:name=".Chat.Activity_Chat" />
+        <activity android:name=".Chat_Package.Activity_Chat_Homepage" />
+        <activity android:name=".Chat_Package.Activity_Chat" />
         <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch" />
         <activity android:name=".Activity_Login">
             <intent-filter>

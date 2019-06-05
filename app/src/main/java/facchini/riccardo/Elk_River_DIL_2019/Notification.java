@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import facchini.riccardo.Elk_River_DIL_2019.R;
+
 public class Notification
 {
     public static final String NOTIFICATION_CHAT = "notification_chat";

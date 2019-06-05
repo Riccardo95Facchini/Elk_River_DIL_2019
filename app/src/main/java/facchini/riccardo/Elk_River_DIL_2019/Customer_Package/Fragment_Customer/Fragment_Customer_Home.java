@@ -35,7 +35,7 @@ import java.util.List;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Adapter_Customer.Adapter_Customer_ReservationCard;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
-import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.OnItemClickListener;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.Reservation_Customer_Home;

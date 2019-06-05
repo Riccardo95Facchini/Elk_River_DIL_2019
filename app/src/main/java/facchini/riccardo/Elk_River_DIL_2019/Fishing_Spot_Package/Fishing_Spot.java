@@ -1,4 +1,4 @@
-package facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot;
+package facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -22,7 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import facchini.riccardo.Elk_River_DIL_2019.Activity_Login;
-import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat_Homepage;
+import facchini.riccardo.Elk_River_DIL_2019.Chat_Package.Activity_Chat_Homepage;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Fragment_Customer.Fragment_Customer_History;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Fragment_Customer.Fragment_Customer_Home;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Fragment_Customer.Fragment_Customer_Profile;

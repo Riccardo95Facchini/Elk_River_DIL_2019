@@ -27,7 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
 public class Fragment_Employee_FishingSpot extends Fragment implements OnMapReadyCallback

@@ -3,7 +3,7 @@ package facchini.riccardo.Elk_River_DIL_2019.Reservation_Package;
 import java.util.Date;
 
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
-import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
+import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 
 public class Reservation_Customer_Home extends Reservation
 {

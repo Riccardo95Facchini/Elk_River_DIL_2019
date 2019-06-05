@@ -1,4 +1,4 @@
-package facchini.riccardo.Elk_River_DIL_2019.Chat;
+package facchini.riccardo.Elk_River_DIL_2019.Chat_Package;
 
 import com.google.firebase.Timestamp;
 

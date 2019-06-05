@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
+import facchini.riccardo.Elk_River_DIL_2019.Chat_Package.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Customer_Package.Customer;
 import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
