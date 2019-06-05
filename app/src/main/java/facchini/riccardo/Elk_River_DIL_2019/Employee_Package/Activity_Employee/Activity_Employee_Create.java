@@ -327,6 +327,7 @@ public class Activity_Employee_Create extends AppCompatActivity
                     .putExtra("city", city)
                     .putExtra("zip", zip)
                     .putExtra("phone", phone)
+                    .putExtra("mail", mail)
                     .putExtra("profilePic", profilePic);
             startActivity(intent);
         } else
