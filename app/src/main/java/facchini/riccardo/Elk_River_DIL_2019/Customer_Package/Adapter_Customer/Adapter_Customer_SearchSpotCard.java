@@ -6,8 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapte
     public void onBindViewHolder(@NonNull Spot_ViewHolder holder, int pos)
     {
         Fishing_Spot fishingSpot = fishingSpotList.get(pos);
-        
+        Glide.with(context).load(R.drawable.fishing_rod_color).fitCenter().into(holder.profilePic);
         holder.textViewName.setText(fishingSpot.getName());
         holder.textViewAddress.setText(fishingSpot.displayCoordinates());
         holder.ratingBar.setRating((float) fishingSpot.getAverageReviews());
@@ -61,6 +64,7 @@ public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapte
     class Spot_ViewHolder extends RecyclerView.ViewHolder
     {
         TextView textViewName, textViewAddress;
+        ImageView profilePic;
         RatingBar ratingBar;
         
         Spot_ViewHolder(@NonNull View itemView, final OnItemClickListener itemClickListener)
@@ -70,6 +74,7 @@ public class Adapter_Customer_SearchSpotCard extends RecyclerView.Adapter<Adapte
             textViewName = itemView.findViewById(R.id.textViewEmployeeName);
             textViewAddress = itemView.findViewById(R.id.textViewAddress);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            profilePic = itemView.findViewById(R.id.profilePic);
             
             
             itemView.setOnClickListener(new View.OnClickListener()

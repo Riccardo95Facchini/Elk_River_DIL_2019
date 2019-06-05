@@ -359,7 +359,7 @@ public class Activity_Employee_TagHours extends AppCompatActivity
         {
             employee = new Employee(uid, name, mail, address1, address2, city, zip, phone, 0, 0, tags, hours, profilePic);
             employeesReference.document(uid).set(employee);
-            startActivity(new Intent(this, Activity_Login.class));
+            startActivity(new Intent(this, Activity_Login.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
         } else
         {
             uid = currentEmployee.getUid();

@@ -39,6 +39,7 @@ public class ImageUploader
         this.editing = editing;
         this.isCustomer = isCustomer;
         db = FirebaseStorage.getInstance();
+        profilePics = db.getReference("profile_pics").child(uid);
     }
     
     public StorageTask upload(Uri image)
@@ -52,8 +53,6 @@ public class ImageUploader
             db.getReferenceFromUrl(storageUrl).delete();
         
         storageUrl = "";
-        
-        profilePics = db.getReference("profile_pics").child(uid);
         
         return profilePics.putFile(image)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
@@ -70,7 +69,7 @@ public class ImageUploader
                                 
                                 if (editing)
                                 {
-                                    if(isCustomer)
+                                    if (isCustomer)
                                         FirebaseFirestore.getInstance().collection("customers").document(uid).update("profilePicUrl", storageUrl);
                                     else
                                         FirebaseFirestore.getInstance().collection("employees").document(uid).update("profilePicUrl", storageUrl);
@@ -80,7 +79,6 @@ public class ImageUploader
                                 uploadBar.setVisibility(View.GONE);
                                 imageView.setClickable(true);
                                 imageView.setColorFilter(Color.argb(0, 0, 0, 0));
-                                Toast.makeText(context, context.getString(R.string.image_uploaded), Toast.LENGTH_SHORT).show();
                             }
                         });
                         
@@ -108,4 +106,27 @@ public class ImageUploader
     }
     
     public String getStorageUrl() {return storageUrl;}
+    
+    /**
+     * Uploads the default avatar in order to fix the resource link
+     */
+    public void uploadDefaultAvatar()
+    {
+        Uri defaultAvatar = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.default_avatar);
+        profilePics.putFile(defaultAvatar).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+        {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+            {
+                profilePics.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
+                    @Override
+                    public void onSuccess(Uri uri)
+                    {
+                        storageUrl = uri.toString();
+                    }
+                });
+            }
+        });
+    }
 }

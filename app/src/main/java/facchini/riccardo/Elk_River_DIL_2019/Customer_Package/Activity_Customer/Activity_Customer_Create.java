@@ -69,10 +69,12 @@ public class Activity_Customer_Create extends AppCompatActivity
         mailText = findViewById(R.id.mailText);
         ProgressBar uploadBar = findViewById(R.id.uploadBar);
         
+        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing, true);
+        
         if (editing)
             fillFields();
-        
-        imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing, true);
+        else
+            imageUploader.uploadDefaultAvatar();
         
         imageView.setOnClickListener(new View.OnClickListener()
         {
@@ -174,6 +176,7 @@ public class Activity_Customer_Create extends AppCompatActivity
             } else
                 storageUrl = imageUploader.getStorageUrl();
         }
+        
         return true;
     }
     
@@ -216,6 +219,6 @@ public class Activity_Customer_Create extends AppCompatActivity
         phone = phone.isEmpty() ? phoneText.getText().toString() : phone;
         Customer newCustomer = new Customer(uid, firstNameText.getText().toString(), surnameText.getText().toString(), phone, mail, storageUrl);
         customers.document(uid).set(newCustomer);
-        startActivity(new Intent(this, Activity_Login.class));
+        startActivity(new Intent(this, Activity_Login.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 }

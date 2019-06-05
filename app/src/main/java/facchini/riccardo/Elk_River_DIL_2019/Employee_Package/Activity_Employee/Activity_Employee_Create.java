@@ -76,11 +76,14 @@ public class Activity_Employee_Create extends AppCompatActivity
         setUI();
         handleTextsOnCreate();
         
-        if (editing)
-            continueButton.setEnabled(true);
-        
         ProgressBar uploadBar = findViewById(R.id.uploadBar);
         imageUploader = new ImageUploader(this, imageView, uploadBar, uid, storageUrl, editing, false);
+        
+        if (editing)
+            continueButton.setEnabled(true);
+        else
+            imageUploader.uploadDefaultAvatar();
+        
     }
     
     /**
@@ -312,6 +315,8 @@ public class Activity_Employee_Create extends AppCompatActivity
         String city = cityText.getText().toString().trim();
         String zip = zipText.getText().toString().trim();
         String phone = phoneText.getText().toString().trim();
+        
+        profilePic = imageUploader.getStorageUrl();
         
         if (!editing)
         {

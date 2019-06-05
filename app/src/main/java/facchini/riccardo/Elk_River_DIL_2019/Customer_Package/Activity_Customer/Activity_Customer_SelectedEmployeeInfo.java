@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Review;
 
@@ -66,6 +68,9 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         Button buttonChat = findViewById(R.id.buttonChat);
         ratingReview = findViewById(R.id.ratingReview);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
+        ImageView employeePic = findViewById(R.id.employeePic);
+    
+        ImageLoader.loadImage(this, employee.getProfilePicUrl(), employeePic);
         
         textEmployeeName.setText(employee.getName());
         textAddress.setText(String.format("%s %s %s %s", employee.getAddress1(), employee.getAddress2(),

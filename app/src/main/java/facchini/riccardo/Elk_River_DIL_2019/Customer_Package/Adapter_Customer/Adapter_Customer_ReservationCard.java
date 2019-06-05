@@ -65,7 +65,7 @@ public class Adapter_Customer_ReservationCard extends RecyclerView.Adapter<Adapt
             holder.textViewName.setText(fishingSpot.getName());
             holder.textViewLocation.setText(fishingSpot.displayCoordinates());
             holder.textViewWhen.setText(res.getDateFormatted());
-            Glide.with(context).load(R.drawable.ic_fishing_pole_black_24dp).placeholder(R.drawable.ic_fishing_pole_black_24dp).fitCenter().centerCrop().into(holder.profilePic);
+            Glide.with(context).load(R.drawable.fishing_rod_color).fitCenter().into(holder.profilePic);
         } else
         {
             Employee employee = res.getEmployee();

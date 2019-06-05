@@ -66,6 +66,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
         findViewById(R.id.textHours).setVisibility(View.GONE);
         findViewById(R.id.textPhoneMail).setVisibility(View.GONE);
         findViewById(R.id.buttonChat).setVisibility(View.GONE);
+        findViewById(R.id.employeePic).setVisibility(View.GONE);
         
         TextView textName = findViewById(R.id.textName);
         TextView textReviews = findViewById(R.id.textReviews);

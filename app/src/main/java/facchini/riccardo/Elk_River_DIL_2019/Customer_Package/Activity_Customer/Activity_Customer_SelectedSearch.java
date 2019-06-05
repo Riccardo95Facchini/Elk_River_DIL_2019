@@ -16,10 +16,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,6 +47,7 @@ import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat;
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.Fragment_DatePicker;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.Notification;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 import facchini.riccardo.Elk_River_DIL_2019.Reservation_Package.ReservationDatabase;
@@ -99,9 +102,11 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         
         if (b != null)
         {
+            ImageView imageView = findViewById(R.id.imageView);
             if (type.equals(getString(R.string.CONST_EXPERT_INSTRUCTOR)) || type.equals(getString(R.string.CONST_RENTAL)))
             {
                 selectedEmployee = b.getParcelable("Selected");
+                ImageLoader.loadImage(this, selectedEmployee.getProfilePicUrl(), imageView);
                 employeeInfoText.setText(String.format("City: %s \tAddress: %s %s", selectedEmployee.getCity(),
                         selectedEmployee.getAddress1(), selectedEmployee.getAddress2()));
                 employeeHoursText.setText(selectedEmployee.displayHoursFormat());
@@ -120,6 +125,7 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
             } else
             {
                 FrameLayout mapFrame = findViewById(R.id.mapFrame);
+                Glide.with(this).load(R.drawable.fishing_rod_color).fitCenter().into(imageView);
                 mapFrame.setVisibility(View.VISIBLE);
                 selectedSpot = b.getParcelable("Selected");
                 name = selectedSpot.getName();

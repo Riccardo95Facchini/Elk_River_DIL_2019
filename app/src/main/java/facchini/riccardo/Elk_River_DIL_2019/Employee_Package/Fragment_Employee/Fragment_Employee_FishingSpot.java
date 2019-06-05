@@ -60,7 +60,7 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-    
+        
         MapView map = view.findViewById(R.id.map);
         
         map.onCreate(null);
@@ -190,19 +190,24 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
      */
     private boolean setMap(double lat, double lng, String title)
     {
+        if (lat < -90 || lat > 90)
+        {
+            editLat.setError(getString(R.string.wrong_coordinates));
+            return false;
+        } else if (lng < -180 || lng > 180)
+        {
+            editLng.setError(getString(R.string.wrong_coordinates));
+            return false;
+        }
+        
         try
         {
-            if (lat < -90 || lat > 90 || lng < -180 || lng > 180)
-                throw new Exception();
-            
             LatLng latLng = new LatLng(lat, lng);
             googleMap.addMarker(new MarkerOptions().position(latLng).title(title));
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latLng).zoom(15f).build()));
             return true;
         } catch (Exception e)
         {
-            editLat.setError(getString(R.string.wrong_coordinates));
-            editLng.setError(getString(R.string.wrong_coordinates));
             return false;
         }
     }

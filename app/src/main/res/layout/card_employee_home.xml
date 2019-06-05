@@ -60,12 +60,11 @@
                 android:layout_below="@id/textViewEmployeeName"
                 android:layout_alignStart="@+id/textViewEmployeeName"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:maxLines="1"
                 android:text="8:30 14-02-2019"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/startChatButton"
+                app:layout_constraintEnd_toEndOf="@+id/textViewEmployeeName"
                 app:layout_constraintStart_toStartOf="@+id/textViewEmployeeName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeName" />
 
