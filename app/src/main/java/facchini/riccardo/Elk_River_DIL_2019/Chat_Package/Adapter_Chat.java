@@ -54,6 +54,7 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
         
         ImageLoader.loadImage(context, chat.getOtherProfilePic(), holder.profilePic);
         
+        holder.textLastMessage.setText(chat.getLastText());
         holder.textViewChatWith.setText(chat.getOtherName());
         holder.textViewWhen.setText(chat.getDateFormatted());
     }
@@ -66,7 +67,7 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
     
     public class ChatEntry_ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView textViewChatWith, textViewWhen;
+        TextView textViewChatWith, textViewWhen, textLastMessage;
         ImageView profilePic, imageNew;
         
         public ChatEntry_ViewHolder(@NonNull final View itemView, final OnItemClickListener itemClickListener)
@@ -77,6 +78,7 @@ public class Adapter_Chat extends RecyclerView.Adapter<Adapter_Chat.ChatEntry_Vi
             textViewWhen = itemView.findViewById(R.id.textViewWhen);
             imageNew = itemView.findViewById(R.id.imageNew);
             profilePic = itemView.findViewById(R.id.profilePic);
+            textLastMessage = itemView.findViewById(R.id.textLastMessage);
             
             itemView.setOnClickListener(new View.OnClickListener()
             {

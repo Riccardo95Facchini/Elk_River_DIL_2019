@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -24,10 +25,10 @@
                 android:id="@+id/profilePic"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="1:1"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/default_avatar"
                 app:layout_constraintBottom_toBottomOf="@+id/textViewWhen"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textViewEmployeeName" />
 
@@ -38,9 +39,9 @@
                 android:layout_marginEnd="8dp"
                 android:paddingRight="4dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/profilePic"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewEmployeeName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/profilePic"
+                app:layout_constraintTop_toTopOf="@+id/textViewEmployeeName"
                 app:srcCompat="@drawable/ic_new" />
 
             <TextView
@@ -51,7 +52,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:maxLines="1"
-                android:text="Forbici e capelli"
+                android:text="Bob Fisherman"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="#000000"
                 android:textSize="18sp"
@@ -61,16 +62,31 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textLastMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewWhen"
+                app:layout_constraintEnd_toStartOf="@+id/textViewWhen"
+                app:layout_constraintStart_toStartOf="@+id/textViewEmployeeName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeName" />
+
+            <TextView
                 android:id="@+id/textViewWhen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
                 android:text="8:30 14-02-2019"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textViewEmployeeName"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEmployeeName" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageNew"
+                app:layout_constraintVertical_bias="0.0" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import facchini.riccardo.Elk_River_DIL_2019.R;
-
 public class Notification
 {
     public static final String NOTIFICATION_CHAT = "notification_chat";
@@ -19,7 +17,7 @@ public class Notification
         this.recipientUid = recipientUid;
         
         if (type.equals(NOTIFICATION_CHAT))
-            this.title = context.getString(R.string.new_chat_message_from) + senderName;
+            this.title = senderName;
         else if (type.equals(NOTIFICATION_RESERVATION))
             this.title = context.getString(R.string.new_reservation_from) + senderName;
         

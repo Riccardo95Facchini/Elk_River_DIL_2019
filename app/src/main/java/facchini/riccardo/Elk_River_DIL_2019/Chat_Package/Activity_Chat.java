@@ -1,5 +1,6 @@
 package facchini.riccardo.Elk_River_DIL_2019.Chat_Package;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class Activity_Chat extends AppCompatActivity
         scrollView = findViewById(R.id.scrollView);
         
         Intent pastIntent = getIntent();
+        setResult(Activity.RESULT_OK);
         thisUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         thisUsername = pastIntent.getStringExtra("thisUsername");
         otherUid = pastIntent.getStringExtra("otherUid");

@@ -1,8 +1,10 @@
 package facchini.riccardo.Elk_River_DIL_2019.Chat_Package;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +36,8 @@ public class Activity_Chat_Homepage extends AppCompatActivity
     
     private TextView noChats;
     private RecyclerView chatsRecycleView;
+    
+    private static final int CHAT_REQUEST = 10;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -100,12 +104,20 @@ public class Activity_Chat_Homepage extends AppCompatActivity
                     intent.putExtra("otherUid", chatData.getOtherUid());
                     intent.putExtra("otherUsername", chatData.getOtherName());
                     intent.putExtra("otherProfilePic", chatData.getOtherProfilePic());
-                    startActivity(intent);
+                    startActivityForResult(intent, CHAT_REQUEST);
                 } catch (Exception e)
                 {
                     e.printStackTrace();
                 }
             }
         });
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CHAT_REQUEST && resultCode == Activity.RESULT_OK)
+            recreate();
     }
 }
