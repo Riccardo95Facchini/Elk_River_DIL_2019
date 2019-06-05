@@ -1,5 +1,6 @@
 package facchini.riccardo.Elk_River_DIL_2019.Chat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class Activity_Chat extends AppCompatActivity
     private Firebase reference;
     
     private boolean justOpened = true;
-    private String thisUid, otherUid, thisUsername, otherUsername, nodeName, otherProfilePic;
+    private String thisUid, otherUid, thisUsername, otherUsername, nodeName, otherProfilePic, thisProfilePic;
     
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,7 +58,7 @@ public class Activity_Chat extends AppCompatActivity
         otherUid = pastIntent.getStringExtra("otherUid");
         otherUsername = pastIntent.getStringExtra("otherUsername");
         otherProfilePic = pastIntent.getStringExtra("otherProfilePic");
-        
+        thisProfilePic = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE).getString(getString(R.string.current_user_pic_key), "");
         Firebase.setAndroidContext(this);
         
         setTitle(otherUsername);
@@ -174,7 +175,7 @@ public class Activity_Chat extends AppCompatActivity
         FirebaseFirestore.getInstance().collection("chats").document(thisUid).set(mapThis, SetOptions.merge());
         
         HashMap<String, ChatData> mapOther = new HashMap<>();
-        ChatData otherData = new ChatData(otherUsername, thisUsername, thisUid, messageText, otherProfilePic, new Date());
+        ChatData otherData = new ChatData(otherUsername, thisUsername, thisUid, messageText, thisProfilePic, new Date());
         mapOther.put(thisUid, otherData);
         FirebaseFirestore.getInstance().collection("chats").document(otherUid).set(mapOther, SetOptions.merge());
         
