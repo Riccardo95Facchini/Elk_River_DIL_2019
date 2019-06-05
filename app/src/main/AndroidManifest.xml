@@ -17,12 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo" />
-        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo" />
-        <activity android:name=".Chat_Package.Activity_Chat_Homepage" />
-        <activity android:name=".Chat_Package.Activity_Chat" />
-        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch" />
-        <activity android:name=".Activity_Login">
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedEmployeeInfo" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSpotInfo" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Chat_Package.Activity_Chat_Homepage" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Chat_Package.Activity_Chat" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer_SelectedSearch" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Activity_Login" android:configChanges="orientation|screenSize">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,19 +33,23 @@
         <activity
             android:name=".Customer_Package.Activity_Customer.Activity_Customer_Create"
             android:label="@string/customerRegistration"
-            android:parentActivityName=".Activity_Login" />
+            android:parentActivityName=".Activity_Login"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".Employee_Package.Activity_Employee.Activity_Employee_Create"
             android:label="@string/employeeRegistration"
-            android:parentActivityName=".Activity_Login" />
+            android:parentActivityName=".Activity_Login"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".Employee_Package.Activity_Employee.Activity_Employee_TagHours"
-            android:label="@string/tagsAndHours" />
+            android:label="@string/tagsAndHours"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".Employee_Package.Activity_Employee.Activity_Employee_Profile"
-            android:label="@string/profile" />
-        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer" />
-        <activity android:name=".Employee_Package.Activity_Employee.Activity_Employee" />
+            android:label="@string/profile"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Customer_Package.Activity_Customer.Activity_Customer" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".Employee_Package.Activity_Employee.Activity_Employee" android:configChanges="orientation|screenSize"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
