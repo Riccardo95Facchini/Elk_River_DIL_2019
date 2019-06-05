@@ -141,7 +141,7 @@ public class Employee implements Parcelable
     
     public String displayFullAddress()
     {
-        return String.format("%s %s %s %s", address1, address2, city, zip);
+        return String.format("%s %s\n%s %s", address1, address2, city, zip);
     }
     
     public String displayHoursFormat()
