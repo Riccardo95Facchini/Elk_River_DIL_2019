@@ -109,7 +109,7 @@
     <string name="maps_api_key">AIzaSyCub6Mcwa1zSQ7LYZGG9m6_IgeI_bXv880</string>
     <string name="fishing_spot_name">Fishing Spot Name</string>
     <string name="check_on_map">Check on map</string>
-    <string name="name_already_used">Name already used, loading it on map…</string>
+    <string name="name_already_used">Name already used</string>
     <string name="enter_name_fishing_spot">Please enter a name for the fishing spot</string>
     <string name="enter_valid_lat">Please enter a valid latitude</string>
     <string name="enter_valid_lng">Please enter a valid longitude</string>

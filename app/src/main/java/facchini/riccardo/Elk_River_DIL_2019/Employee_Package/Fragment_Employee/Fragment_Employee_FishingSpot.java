@@ -20,12 +20,16 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import facchini.riccardo.Elk_River_DIL_2019.Fishing_Spot_Package.Fishing_Spot;
 import facchini.riccardo.Elk_River_DIL_2019.R;
@@ -39,6 +43,10 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
     private EditText editLng;
     private Button buttonSend;
     private Button buttonCheck;
+    private Marker marker;
+    private LatLng camera;
+    
+    private ArrayList<String> usedNames;
     
     private boolean isNameOk;
     
@@ -84,7 +92,7 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
                 isNameOk = false;
                 
                 if (!hasFocus && !editName.getText().toString().trim().isEmpty())
-                    checkName(editName.getText().toString().trim().toLowerCase());
+                    checkName(editName.getText().toString().trim().toLowerCase(), false);
             }
         });
         
@@ -108,8 +116,11 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
             {
                 hideKeyboard();
                 
-                if (checkFieldsValues() && isNameOk)
-                    sendData();
+                if (checkFieldsValues())
+                    if (!isNameOk)
+                        checkName(editName.getText().toString().trim().toLowerCase(), true);
+                    else
+                        sendData();
             }
         });
     }
@@ -145,11 +156,10 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
                 @Override
                 public void onSuccess(Void aVoid)
                 {
-                    Toast.makeText(getContext(), getString(R.string.fishing_spot_added), Toast.LENGTH_SHORT).show();
-                    editName.getText().clear();
-                    editLat.getText().clear();
-                    editLng.getText().clear();
                     isNameOk = false;
+                    editName.getText().clear();
+                    Toast.makeText(getContext(), getString(R.string.fishing_spot_added), Toast.LENGTH_SHORT).show();
+                    googleMap.addMarker(new MarkerOptions().title(newSpot.getName()).position(new LatLng(newSpot.getLatitude(), newSpot.getLongitude()))).showInfoWindow();
                 }
             });
         }
@@ -160,7 +170,7 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
      *
      * @param nameLowercase Name given to the spot set to lowercase
      */
-    private void checkName(String nameLowercase)
+    private void checkName(String nameLowercase, final boolean forSend)
     {
         spots.whereEqualTo("nameLowercase", nameLowercase).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
         {
@@ -168,13 +178,16 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
             public void onSuccess(QuerySnapshot queryDocumentSnapshots)
             {
                 if (queryDocumentSnapshots.isEmpty())
+                {
                     isNameOk = true;
-                else
+                    marker.setTitle(editName.getText().toString().trim());
+                    marker.showInfoWindow();
+                    if (forSend)
+                        sendData();
+                } else
                 {
                     isNameOk = false;
                     editName.setError(getString(R.string.name_already_used));
-                    Fishing_Spot existingSpot = new Fishing_Spot(queryDocumentSnapshots.getDocuments().get(0).getData());
-                    setMap(existingSpot.getLatitude(), existingSpot.getLongitude(), existingSpot.getName());
                 }
             }
         });
@@ -203,7 +216,14 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
         try
         {
             LatLng latLng = new LatLng(lat, lng);
-            googleMap.addMarker(new MarkerOptions().position(latLng).title(title));
+            if (marker == null)
+                marker = googleMap.addMarker(new MarkerOptions().position(latLng).title(title));
+            else
+            {
+                marker.setPosition(latLng);
+                marker.setTitle(title);
+            }
+            marker.showInfoWindow();
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latLng).zoom(15f).build()));
             return true;
         } catch (Exception e)
@@ -219,16 +239,65 @@ public class Fragment_Employee_FishingSpot extends Fragment implements OnMapRead
     {
         editLat.setError(null);
         editLng.setError(null);
-        View currentFocus = getActivity().getCurrentFocus();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        try
+        {
+            View currentFocus = getActivity().getCurrentFocus();
+            currentFocus.clearFocus();
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @Override
-    public void onMapReady(GoogleMap googleMap)
+    public void onMapReady(GoogleMap map)
     {
         MapsInitializer.initialize(getContext());
-        this.googleMap = googleMap;
-        this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap = map;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        
+        loadMarkers();
+        
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener()
+        {
+            @Override
+            public void onCameraMove()
+            {
+                LatLng newCamera = googleMap.getCameraPosition().target;
+                
+                if (camera != null && Math.abs(camera.latitude - newCamera.latitude) < 0.00001 && Math.abs(camera.longitude - newCamera.longitude) < 0.00001)
+                    return;
+                
+                camera = newCamera;
+                editLat.setText(String.valueOf(camera.latitude));
+                editLng.setText(String.valueOf(camera.longitude));
+                
+                marker.setPosition(camera);
+                String title = editName.getText().toString().isEmpty() ? "Marker" : editName.getText().toString();
+                marker.setTitle(title);
+                marker.showInfoWindow();
+            }
+        });
+        
+        setMap(38.5281913, -81.7226506, "Elk River");
+        editLat.setText(String.valueOf(38.5281913));
+        editLng.setText(String.valueOf(-81.7226506));
+    }
+    
+    private void loadMarkers()
+    {
+        spots.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
+        {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots)
+            {
+                MarkerOptions options = new MarkerOptions().draggable(false);
+                usedNames = new ArrayList<>();
+                for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments())
+                    googleMap.addMarker(options.title((String) doc.get("name")).position(new LatLng(doc.getDouble("latitude"), doc.getDouble("longitude")))).showInfoWindow();
+            }
+        });
     }
 }
