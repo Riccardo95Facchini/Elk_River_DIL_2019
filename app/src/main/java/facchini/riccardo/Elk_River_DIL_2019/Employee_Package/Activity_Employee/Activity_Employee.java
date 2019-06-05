@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import facchini.riccardo.Elk_River_DIL_2019.Activity_Login;
 import facchini.riccardo.Elk_River_DIL_2019.Chat.Activity_Chat_Homepage;
@@ -54,6 +57,21 @@ public class Activity_Employee extends AppCompatActivity
         
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new Fragment_Employee_Home()).commit();
         setupFirebaseListener();
+        
+        final SharedPreferences sp = getSharedPreferences(getString(R.string.elk_river_preferences), Context.MODE_PRIVATE);
+        
+        if (sp.getString(getString(R.string.current_user_pic_key), "").isEmpty())
+        {
+            FirebaseFirestore.getInstance().collection("employees").document(sp.getString(getString(R.string.current_user_uid_key), "")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+            {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot)
+                {
+                    sp.edit().putString(getString(R.string.current_user_pic_key), (String) documentSnapshot.get("profilePicUrl")).apply();
+                }
+            });
+        }
+        
     }
     
     private BottomNavigationView.OnNavigationItemSelectedListener selectedListener = new BottomNavigationView.OnNavigationItemSelectedListener()

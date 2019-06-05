@@ -206,7 +206,6 @@ public class Activity_Customer_SelectedSearch extends AppCompatActivity implemen
         
         if (!isSpot)
         {
-            
             reservationsCollection.whereEqualTo("employeeUid", selectedEmployee.getUid())
                     .whereGreaterThan("time", selectedDate.getTime())
                     .whereLessThan("time", plusDay.getTime()).get()
