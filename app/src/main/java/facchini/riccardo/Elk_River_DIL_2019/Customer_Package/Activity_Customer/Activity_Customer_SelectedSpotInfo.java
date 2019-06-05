@@ -93,9 +93,7 @@ public class Activity_Customer_SelectedSpotInfo extends AppCompatActivity implem
             {
                 if (!justOpened)
                 {
-                    if (rating <= 0 || rating == pastRating)
-                        sendReview();
-                    else
+                    if (rating > 0 && rating != pastRating)
                     {
                         currentRating = (int) rating;
                         sendReview();

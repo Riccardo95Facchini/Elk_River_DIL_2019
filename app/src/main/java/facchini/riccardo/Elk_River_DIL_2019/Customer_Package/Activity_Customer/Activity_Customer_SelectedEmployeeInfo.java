@@ -69,7 +69,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
         ratingReview = findViewById(R.id.ratingReview);
         RatingBar ratingAvg = findViewById(R.id.ratingAvg);
         ImageView employeePic = findViewById(R.id.employeePic);
-    
+        
         ImageLoader.loadImage(this, employee.getProfilePicUrl(), employeePic);
         
         textEmployeeName.setText(employee.getName());
@@ -87,9 +87,7 @@ public class Activity_Customer_SelectedEmployeeInfo extends AppCompatActivity
             {
                 if (!justOpened)
                 {
-                    if (rating <= 0 || rating == pastRating)
-                        sendReview();
-                    else
+                    if (rating > 0 && rating != pastRating)
                     {
                         currentRating = (int) rating;
                         sendReview();
