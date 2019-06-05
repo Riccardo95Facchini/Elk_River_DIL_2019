@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import facchini.riccardo.Elk_River_DIL_2019.Employee_Package.Employee;
+import facchini.riccardo.Elk_River_DIL_2019.ImageLoader;
 import facchini.riccardo.Elk_River_DIL_2019.ImageUploader;
 import facchini.riccardo.Elk_River_DIL_2019.R;
 
@@ -61,6 +62,8 @@ public class Activity_Employee_Create extends AppCompatActivity
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
         currentEmployee = b.getParcelable("CurrentEmployee");
+        
+        
         if (currentEmployee != null)
         {
             setTitle(R.string.edit);
@@ -116,6 +119,7 @@ public class Activity_Employee_Create extends AppCompatActivity
         
         if (editing)
         {
+            ImageLoader.loadImage(this, storageUrl, imageView);
             textTop.setText(getString(R.string.changeFieldsEditEmployee));
             employeeNameText.setText(currentEmployee.getName());
             address1Text.setText(currentEmployee.getAddress1());
