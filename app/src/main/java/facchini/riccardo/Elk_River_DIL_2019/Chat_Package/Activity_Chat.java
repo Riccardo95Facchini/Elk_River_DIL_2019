@@ -71,7 +71,7 @@ public class Activity_Chat extends AppCompatActivity
         else
             nodeName = otherUid + "_" + thisUid;
         
-        reference = new Firebase("https://elkriverdil2019.firebaseio.com/messages/" + nodeName);
+        reference = new Firebase("INSERT_DB_URL_HERE" + nodeName); //TODO: Insert DB URL
         
         sendButton.setOnClickListener(new View.OnClickListener()
         {

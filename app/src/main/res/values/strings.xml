@@ -106,7 +106,6 @@
     <string name="write_a_review_optional">Write a review! (optional)</string>
     <string name="star_review">%s: %d star review</string>
     <string name="rental_equipment">Rental Equipment</string>
-    <string name="maps_api_key">AIzaSyCub6Mcwa1zSQ7LYZGG9m6_IgeI_bXv880</string>
     <string name="fishing_spot_name">Fishing Spot Name</string>
     <string name="check_on_map">Check on map</string>
     <string name="name_already_used">Name already used</string>
