@@ -16,6 +16,8 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 [![Contributors][contributors-shield]][contributors-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -60,3 +62,7 @@ Riccardo Facchini - [LinkedIn](https://www.linkedin.com/in/riccardo-facchini-1a8
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/Riccardo95Facchini/Elk_River_DIL_2019
 [contributors-url]: https://github.com/Riccardo95Facchini/Elk_River_DIL_2019/graphs/contributors
+[license-shield]: https://img.shields.io/github/license/Riccardo95Facchini/Elk_River_DIL_2019
+[license-url]: https://github.com/Riccardo95Facchini/Elk_River_DIL_2019/blob/master/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/riccardo-facchini-1a8206194
